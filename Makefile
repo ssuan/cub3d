@@ -3,39 +3,39 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sunbchoi <sunbchoi@student.42.fr>          +#+  +:+       +#+         #
+#    By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 14:46:27 by sunbchoi          #+#    #+#              #
-#    Updated: 2021/11/25 17:42:40 by sunbchoi         ###   ########.fr        #
+#    Updated: 2022/04/19 01:01:56 by suan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAG = -Wall -Wextra -Werror
+CFLAG = #-Wall -Wextra -Werror
 
 SRCS = src/main.c\
-		src/check_area.c\
-		src/error.c\
-		src/initialize.c\
-		src/print_map.c\
-		src/process_game.c\
-		src/validate_map.c\
-		
+
 OBJS = $(SRCS:.c=.o)
-NAME = so_long
+NAME = cub3D
+
 LIBFT_DIR =	./libft
 LIBFT_NAME = libft.a
+
 MINI_DIR = ./minilibx_opengl
 MINI_NAME = libmlx.a
-HEADER = -I /minilibx_2020
-LIBS		=-L. -lmlx -lft -framework OpenGL -framework Appkit
+
+INC = -I./minilibx_opengl -I.
+LIBS = -L. -lmlx -lft -framework OpenGL -framework Appkit
 
 RM = rm -f
 
 all: $(NAME)
 
-$(NAME):	$(MINI_NAME) $(LIBFT_NAME) $(OBJS) 
-			$(CC) $(CFLAG) $(HEADER) -o $@ $(OBJS) $(LIBS)
+%.o:			%.c
+			$(CC) $(CFLAGS) -c $< -o $@ $(INC)
+
+$(NAME):	$(MINI_NAME) $(LIBFT_NAME) $(OBJS)
+			$(CC) $(CFLAG) $(INC) -o $@ $(OBJS) $(LIBS)
 
 $(MINI_NAME):
 	make -C $(MINI_DIR)
@@ -44,9 +44,6 @@ $(MINI_NAME):
 $(LIBFT_NAME):
 	make -C $(LIBFT_DIR)
 	mv $(LIBFT_DIR)/$(LIBFT_NAME) .
-	
-%o:			%.c
-			$(CC) $(CFLAGS)  -c $< -o $@
 
 clean:
 			$(RM) $(OBJS)
