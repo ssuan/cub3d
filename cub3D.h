@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/04/19 01:42:52 by suan             ###   ########.fr       */
+/*   Updated: 2022/04/27 13:39:15 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 # include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
 # include <fcntl.h>
-# include <mlx.h>
 # include "./libft/libft.h"
 
 # define ITEM_KEY "10CPE"
@@ -46,35 +46,47 @@
 #define WIDTH TILES * COL
 #define HEIGHT TILES * ROW
 
-typedef struct s_img
-{
-	void *img_ptr;
-	int *data;
-	int bpp;
-	int size_line;
-	int endian;
-} t_img;
+#define  EPS            (1e-06)
+#define  is_zero(d)     (fabs(d) < EPS)
+#define  deg2rad(d)     ((d)*M_PI/180.0)    /* degree to radian */
+#define  rad2deg(d)     ((d)*180.0/M_PI)    /* radian to degree */
+#define  min(a,b)       ((a)<(b)? (a):(b))
+#define  max(a,b)       ((a)>(b)? (a):(b))
 
-typedef struct s_pos
-{
-    double x;
-    double y;
-} t_pos;
+#define  MAPX   6
+#define  MAPY   5
+#define  SX         300     /* screen width */
+#define  SY         250     /* screen height */
+#define  FOV        60      /* field of view (in degree) */
+#define  FOV_H      deg2rad(FOV)
+#define  FOV_V      (FOV_H*(double)SY/(double)SX)
+#define  WALL_H     1.0
 
-typedef struct s_dir_vec
-{
-    double x;
-    double y;
-} t_dir_vec;
+#define  _2PI       6.28318530717958647692  /* 2 * M_PI */
+
+#define  ROT_UNIT   0.03    /* rad */
+#define  MOVE_UNIT  0.1
+
+typedef struct {
+	double px;
+	double py;
+	double th;
+} player_t;
+
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
 
 typedef struct s_game
 {
-	void *mlx_ptr;
-	void *win_ptr;
-	t_img img;
-    t_pos pos;
-    t_dir_vec dir_vec;
-	int map[ROW][COL];
+	void	*mlx;
+	void	*mlx_win;
+	player_t pl;
+	t_data	img;
 } t_game;
 
 #endif

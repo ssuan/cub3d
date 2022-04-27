@@ -1,48 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include "cub3D.h"
 #include "mlx.h"
-
-# define KEY_W 13
-# define KEY_A 0
-# define KEY_S 1
-# define KEY_D 2
-
-# define KEY_LEFT 123
-# define KEY_RIGHT 124
-# define KEY_DOWN 125
-# define KEY_UP 126
-# define KEY_ESC 53
-
-# define KEY_EVENT_PRESS    2
-# define KEY_EVENT_EXIT        17
-
-#define  EPS            (1e-06)
-#define  is_zero(d)     (fabs(d) < EPS)
-#define  deg2rad(d)     ((d)*M_PI/180.0)    /* degree to radian */
-#define  rad2deg(d)     ((d)*180.0/M_PI)    /* radian to degree */
-#define  min(a,b)       ((a)<(b)? (a):(b))
-#define  max(a,b)       ((a)>(b)? (a):(b))
-
-#define  SX         400     /* screen width */
-#define  SY         250     /* screen height */
-#define  FOV        60      /* field of view (in degree) */
-#define  FOV_H      deg2rad(FOV)
-#define  FOV_V      (FOV_H*(double)SY/(double)SX)
-#define  WALL_H     1.0
-
-#define  _2PI       6.28318530717958647692  /* 2 * M_PI */
-
-#define  ROT_UNIT   0.03    /* rad */
-#define  MOVE_UNIT  0.1
-
-//enum { KEY_OTHER, KEY_W, KEY_A, KEY_S, KEY_D, KEY_LEFT, KEY_RIGHT, KEY_ESC };
-
-typedef struct {
-	double px;
-	double py;
-	double th;
-} player_t;
 
 static const double ANGLE_PER_PIXEL = FOV_H / (SX-1.);
 static const double FOVH_2 = FOV_H / 2.0;
@@ -50,10 +7,7 @@ static const double FOVH_2 = FOV_H / 2.0;
 enum { VERT, HORIZ };
 
 typedef enum { false=0, true=1 } bool;
-typedef enum { DIR_N=0, DIR_E, DIR_W, DIR_S } dir_t;
-
-#define  MAPX   6
-#define  MAPY   5
+typedef enum { DIR_N=0, DIR_E=1, DIR_W=2, DIR_S=3 } dir_t;
 
 static int map[MAPX][MAPY] = {  /* warning: index order is [x][y] */
 	{1,1,1,1,1}, /* [0][*] */
@@ -64,28 +18,24 @@ static int map[MAPX][MAPY] = {  /* warning: index order is [x][y] */
 	{1,1,1,1,1}
 };
 
-int
-map_get_cell( int x, int y )
+int	map_get_cell( int x, int y )
 {
 	return (x >= 0 && x < MAPX && y >= 0 && y < MAPY) ? map[x][y] : -1;
 }
 
-int
-sgn( double d )
+int sgn( double d )
 {
 	return is_zero(d) ? 0 : ((d > 0) ? 1 : -1);
 }
 
-double
-l2dist( double x0, double y0, double x1, double y1 )
+double l2dist( double x0, double y0, double x1, double y1 )
 {
 	double dx = x0 - x1;
 	double dy = y0 - y1;
 	return sqrt(dx*dx + dy*dy);
 }
 
-bool
-get_wall_intersection( double ray, double px, double py, dir_t* wdir, double* wx, double* wy )
+bool get_wall_intersection( double ray, double px, double py, dir_t* wdir, double* wx, double* wy )
 {
 	int xstep = sgn( cos(ray) );  /* +1 (right), 0 (no change), -1 (left) */
 	int ystep = sgn( sin(ray) );  /* +1 (up),    0 (no change), -1 (down) */
@@ -96,8 +46,8 @@ get_wall_intersection( double ray, double px, double py, dir_t* wdir, double* wx
 	double nx = (xstep > 0) ? floor(px)+1 : ((xstep < 0) ? ceil(px)-1 : px);
 	double ny = (ystep > 0) ? floor(py)+1 : ((ystep < 0) ? ceil(py)-1 : py);
 
-	printf("\nray=%.2f deg, xstep=%d, ystep=%d, xslope=%.2f, yslope=%.2f, nx=%.2f, ny=%.2f\n",
-		rad2deg(ray), xstep, ystep, xslope, yslope, nx, ny);
+	// printf("\nray=%.2f deg, xstep=%d, ystep=%d, xslope=%.2f, yslope=%.2f, nx=%.2f, ny=%.2f\n",
+	// 	rad2deg(ray), xstep, ystep, xslope, yslope, nx, ny);
 
 	double f=INFINITY, g=INFINITY;
 	bool hit = false;
@@ -153,14 +103,14 @@ get_wall_intersection( double ray, double px, double py, dir_t* wdir, double* wx
 	return hit;
 }
 double
-cast_single_ray( int x, player_t pl, dir_t* pdir )
+cast_single_ray( int x, player_t pl, dir_t* wdir )
 {
 	double ray = (pl.th + FOVH_2) - (x * ANGLE_PER_PIXEL);
 
-	dir_t wdir;     /* direction of wall */
+	//dir_t wdir;     /* direction of wall */
 	double wx, wy;  /* coord. of wall intersection point */
 
-	if( get_wall_intersection(ray, pl.px, pl.py, &wdir, &wx, &wy) == false )
+	if( get_wall_intersection(ray, pl.px, pl.py, wdir, &wx, &wy) == false )
 		return INFINITY; /* no intersection - maybe bad map? */
 
 	double wdist = l2dist(pl.px, pl.py, wx, wy);
@@ -168,25 +118,6 @@ cast_single_ray( int x, player_t pl, dir_t* pdir )
 
 	return wdist;
 }
-
-typedef struct	s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_data;
-
-
-typedef struct s_game
-{
-	void	*mlx;
-	void	*mlx_win;
-	player_t pl;
-	t_data	img;
-} t_game;
-
-
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -247,7 +178,7 @@ render( t_game *game )
 	for( int x=0; x<SX; x++ ) {
 		dir_t wdir;
 		double wdist = cast_single_ray(x, game->pl, &wdir);
-		draw_wall(game->img, wdist, x, wall_colors[wdir % 5]);
+		draw_wall(game->img, wdist, x, wall_colors[wdir]);
 	}
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img.img, 0, 0);
 }
@@ -367,8 +298,8 @@ main( int ac, char** av )
 	// }
 
 	mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
-	mlx_hook(game.mlx_win, KEY_EVENT_PRESS, 0, key_press, &game);
-	mlx_hook(game.mlx_win, KEY_EVENT_EXIT, 0, exit_button, &game);
+	mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);
+	mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, &game);
 	mlx_loop(game.mlx);
 
 	return 0;
