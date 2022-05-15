@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:27:37 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 14:42:32 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/15 15:10:07 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	render( t_game *game )
 	loop = 0;
 	while (loop < SX)
 	{
-		wdist = cast_single_ray(loop, game->pl, &wdir);
+		wdist = cast_single_ray(loop, game, &wdir);
 		draw_wall(game->img, wdist, loop, g_wall_colors[wdir]);
 		loop++;
 	}
