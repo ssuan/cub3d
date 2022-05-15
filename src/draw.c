@@ -6,7 +6,7 @@
 /*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:27:37 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 15:10:07 by sunbchoi@st      ###   ########.fr       */
+/*   Updated: 2022/05/15 15:17:27 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-static int	get_wall_height( double dist )
+static int	get_wall_height( t_game *game, double dist )
 {
 	double	fov_h;
 
-	fov_h = 2.0 * dist * tan(FOV_V / 2.0);
+	fov_h = 2.0 * dist * tan(game->fov_v / 2.0);
 	return ((int)(SY * (WALL_H / fov_h)));
 }
 
 //wall
-static void	draw_wall( t_data img, double wdist, int x, int color )
+static void	draw_wall( t_game *game, double wdist, int x, int color )
 {
 	int	wh;
 	int	y0;
@@ -44,14 +44,14 @@ static void	draw_wall( t_data img, double wdist, int x, int color )
 	int	ystart;
 	int	yend;
 
-	wh = get_wall_height(wdist);
+	wh = get_wall_height(game, wdist);
 	y0 = (int)((SY - wh) / 2.0);
 	y1 = y0 + wh - 1;
 	ystart = max(0, y0);
 	yend = min(SY - 1, y1);
 	while (ystart < yend)
 	{
-		my_mlx_pixel_put(&img, x, ystart, color);
+		my_mlx_pixel_put(&(game->img), x, ystart, color);
 		ystart++;
 	}
 }
@@ -80,7 +80,7 @@ void	render( t_game *game )
 	while (loop < SX)
 	{
 		wdist = cast_single_ray(loop, game, &wdir);
-		draw_wall(game->img, wdist, loop, g_wall_colors[wdir]);
+		draw_wall(game, wdist, loop, g_wall_colors[wdir]);
 		loop++;
 	}
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img.img, 0, 0);
