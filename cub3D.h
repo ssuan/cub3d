@@ -6,7 +6,7 @@
 /*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 15:08:27 by sunbchoi@st      ###   ########.fr       */
+/*   Updated: 2022/05/15 16:23:25 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@
 #define  SX         300     /* screen width */
 #define  SY         250     /* screen height */
 #define  FOV        60      /* field of view (in degree) */
-#define  FOV_H      deg2rad(FOV)
-#define  FOV_V      (FOV_H*(double)SY/(double)SX)
+// #define  FOV_H      deg2rad(FOV)
+// #define  FOV_V      (FOV_H*(double)SY/(double)SX)
 #define  WALL_H     1.0
 
 #define  _2PI       6.28318530717958647692  /* 2 * M_PI */
@@ -74,6 +74,26 @@ typedef struct {
 	double py;
 	double th;
 } player_t;
+
+typedef struct	s_pos{
+	double pos_x;
+	double pos_y;
+}				t_pos;
+
+
+typedef struct	s_sector{
+	int xstep;
+	int ystep;
+	double xslope;
+	double yslope;
+	double f;
+	double g;
+	int mapx;
+	int mapy;
+	double dist_v;
+	double dist_h;
+	int hit_side;
+}				t_sector;
 
 typedef struct	s_data {
 	void	*img;
@@ -111,7 +131,7 @@ int	map_get_cell( int x, int y );
 // draw
 void	render( t_game *game );
 
-bool get_wall_intersection( double ray, double px, double py, dir_t* wdir, double* wx, double* wy );
+bool get_wall_intersection( double ray, player_t pl, dir_t* wdir, t_pos *wpos);
 
 // util 
 double l2dist( double x0, double y0, double x1, double y1 );

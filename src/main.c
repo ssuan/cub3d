@@ -22,75 +22,107 @@ int	map_get_cell( int x, int y )
 		return (-1);
 }
 
-bool get_wall_intersection( double ray, double px, double py, dir_t* wdir, double* wx, double* wy )
+void init_sect(t_sector *sect, double ray)
 {
-	int xstep = sgn( cos(ray) );  /* +1 (right), 0 (no change), -1 (left) */
-	int ystep = sgn( sin(ray) );  /* +1 (up),    0 (no change), -1 (down) */
-
-	double xslope = (xstep == 0) ? INFINITY : tan(ray);
-	double yslope = (ystep == 0) ? INFINITY : 1./tan(ray);
-
-	double nx = (xstep > 0) ? floor(px)+1 : ((xstep < 0) ? ceil(px)-1 : px);
-	double ny = (ystep > 0) ? floor(py)+1 : ((ystep < 0) ? ceil(py)-1 : py);
+	ft_memset(sect, 0, sizeof(sect));
+	sect->xstep = sgn(cos(ray));  /* +1 (right), 0 (no change), -1 (left) */
+	sect->ystep = sgn(sin(ray));  /* +1 (up),    0 (no change), -1 (down) */
+	if (sect->xstep == 0)
+		sect->xslope = INFINITY;
+	else
+		sect->xslope = tan(ray);
 	
+	if (sect->ystep == 0)
+		sect->yslope = INFINITY;
+	else
+		sect->yslope = 1./tan(ray);
+}
+
+void next_init(player_t pl, t_pos *next, t_sector sect)
+{
+	if (sect.xstep > 0)
+		next->pos_x = floor(pl.px)+1;
+	else if (sect.xstep < 0)
+		next->pos_x = ceil(pl.px)-1;
+	else 
+		next->pos_x = pl.px;
+	if (sect.ystep > 0)
+		next->pos_y = floor(pl.py)+1;
+	else if (sect.ystep < 0)
+		next->pos_y = ceil(pl.py)-1;
+	else 
+		next->pos_y = pl.py;
+}
+
+bool get_wall_intersection( double ray, player_t pl, dir_t* wdir, t_pos *wpos)
+{
+	t_sector	sect;
+	t_pos		next;
 	double f=INFINITY, g=INFINITY;
+
+	// f , g, hit side mapx mapy dist-h dist-v
+
 	bool hit = false;
 	int hit_side; /* either VERT or HORIZ */
-
+	init_sect(&sect, ray);
+	next_init(pl, &next, sect);
 	while( !hit )
 	{
 		int mapx, mapy;
-
-		if( xstep != 0 ) f = xslope * (nx-px) + py;
-		if( ystep != 0 ) g = yslope * (ny-py) + px;
-
-		/* which is nearer to me - VERT(nx,f) or HORIZ(g,ny)? */
-		double dist_v = l2dist(px, py, nx, f);
-		double dist_h = l2dist(px, py, g, ny);
+		if( sect.xstep != 0 ) 
+			f = sect.xslope * (next.pos_x-pl.px) + pl.py;
+		if( sect.ystep != 0 ) 
+			g = sect.yslope * (next.pos_y-pl.py) + pl.px;
+		
+		/* which is nearer to me - VERT(next.pos_x,f) or HORIZ(g,next.pos_y)? */
+		double dist_v = l2dist(pl.px, pl.py, next.pos_x, f);
+		double dist_h = l2dist(pl.px, pl.py, g, next.pos_y);
 
 		if( dist_v < dist_h ) { /* VERT is nearer; go along x-axis */
-			mapx = (xstep == 1) ? (int)(nx) : (int)(nx)-1 ;
+			mapx = (sect.xstep == 1) ? (int)(next.pos_x) : (int)(next.pos_x)-1 ;
 			mapy = (int) f;
 			hit_side = VERT;
 			printf(" V(%d, %.2f) ->", mapx, f);
 		}
 		else {  /* HORIZ is nearer; go along y-axis */
 			mapx = (int) g;
-			mapy = (ystep == 1) ? (int)(ny) : (int)(ny)-1 ;
+			mapy = (sect.ystep == 1) ? (int)(next.pos_y) : (int)(next.pos_y)-1 ;
 			hit_side = HORIZ;
 			printf(" H(%.2f, %d) ->", g, mapy);
 		}
+
 		int cell = map_get_cell(mapx, mapy);
 		if( cell < 0 ) break;   /* out of map */
-
 		if( cell == 1 ) {   /* hit wall? */
 			if( hit_side == VERT ) {
-				*wdir = (xstep > 0) ? DIR_W : DIR_E;
-				*wx = nx;
-				*wy = f;
+				*wdir = (sect.xstep > 0) ? DIR_W : DIR_E;
+				wpos->pos_x = next.pos_x;
+				wpos->pos_y = f;
 			}
 			else { /* HORIZ */
-				*wdir = (ystep > 0) ? DIR_S : DIR_N;
-				*wx = g;
-				*wy = ny;
+				*wdir = (sect.ystep > 0) ? DIR_S : DIR_N;
+				wpos->pos_x = g;
+				wpos->pos_y = next.pos_y;
 			}
 			hit = true;
 			printf(" hit wall!\n");
 			break;
 		}
-
-		if( hit_side == VERT ) nx += xstep;
-		else ny += ystep;
+		if( hit_side == VERT ) next.pos_x += sect.xstep;
+		else next.pos_y += sect.ystep;
 	}
 	/* end of while(!hit) */
-
 	return hit;
 }
 
 int        key_press(int keycode, t_game *game)
 {    
-	if( keycode == KEY_LEFT || keycode == KEY_RIGHT ) {
-		player_rotate(&game->pl, ROT_UNIT * (keycode==KEY_LEFT ? 1 : -1));
+	if( keycode == KEY_LEFT || keycode == KEY_RIGHT )
+	{
+		if (keycode == KEY_LEFT)
+			player_rotate(&game->pl, ROT_UNIT);
+		else
+			player_rotate(&game->pl, -1 * ROT_UNIT);
 		render(game);
 	}
 	else if( keycode == KEY_W || keycode == KEY_A \
