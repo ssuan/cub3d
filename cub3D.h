@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
+/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 16:23:25 by sunbchoi@st      ###   ########.fr       */
+/*   Updated: 2022/05/15 16:58:49 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@
 #define ROW 15
 #define WIDTH TILES * COL
 #define HEIGHT TILES * ROW
+
+#define VERT 0
+#define HORIZ 1
 
 //
 // #define  deg2rad(d)     ((d)*M_PI/180.0)    /* degree to radian */
@@ -92,7 +95,7 @@ typedef struct	s_sector{
 	int mapy;
 	double dist_v;
 	double dist_h;
-	int hit_side;
+	int hit_side; /* either VERT or HORIZ */
 }				t_sector;
 
 typedef struct	s_data {
@@ -139,5 +142,8 @@ int is_zero(double d);
 int sgn( double d );
 double deg2rad(double degree);
 double rad2deg(double radian);
+
+// intersection
+bool	get_wall_intersection(double ray, player_t pl, dir_t *wdir, t_pos *wpos);
 
 #endif

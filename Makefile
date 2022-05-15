@@ -6,7 +6,7 @@
 #    By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 14:46:27 by sunbchoi          #+#    #+#              #
-#    Updated: 2022/05/15 14:20:56 by suan             ###   ########.fr        #
+#    Updated: 2022/05/15 16:57:58 by suan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRCS = src/main.c\
 		src/ray.c\
 		src/draw.c\
 		src/util.c\
+		src/intersection.c\
 
 OBJS = $(SRCS:.c=.o)
 NAME = cub3D
