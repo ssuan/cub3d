@@ -6,7 +6,7 @@
 /*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 13:45:06 by sunbchoi@st      ###   ########.fr       */
+/*   Updated: 2022/05/15 14:31:30 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@
 
 # define SUCCESS 1
 # define FAILURE 0
+# define TRUE 1
+# define FALSE 0
+
 
 #define TILES 60
 #define COL 15
@@ -88,6 +91,19 @@ typedef struct s_game
 	void	*mlx_win;
 	player_t pl;
 	t_data	img;
+	double fov_h;
+	double fov_v;
+	double per_angle;
 } t_game;
+
+/* UTIL */
+
+int  ft_min(int val1, int val2);
+int  ft_max(int val1, int val2);
+// double deg2rad(double degree);
+// double rad2deg(double radian);
+int is_zero(double d);
+double l2dist( double x0, double y0, double x1, double y1);
+int sgn( double d );
 
 #endif
