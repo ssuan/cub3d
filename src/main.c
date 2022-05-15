@@ -6,6 +6,11 @@ static const double FOVH_2 = FOV_H / 2.0;
 
 enum { VERT, HORIZ };
 
+int wall_colors[] = {    /* DIR_N, E, W, S */
+		0x00ccaaaa, 0x00aaccaa, 0x00aaaacc, 0x00bbbbbb
+	};
+
+
 typedef enum { false=0, true=1 } bool;
 typedef enum { DIR_N=0, DIR_E=1, DIR_W=2, DIR_S=3 } dir_t;
 
@@ -20,19 +25,43 @@ static int map[MAPX][MAPY] = {  /* warning: index order is [x][y] */
 
 int	map_get_cell( int x, int y )
 {
-	return (x >= 0 && x < MAPX && y >= 0 && y < MAPY) ? map[x][y] : -1;
+	if ((x >= 0 && x < MAPX) \
+		&& (y >= 0 && y < MAPY))
+		return map[x][y];
+	else
+		return (-1);
 }
+
+int is_zero(double d)
+{
+	double eps;
+
+	eps = 1e-06;
+	if (fabs(d) < eps)
+		return (1);
+	else
+		return (0);
+}
+
 
 int sgn( double d )
 {
-	return is_zero(d) ? 0 : ((d > 0) ? 1 : -1);
+	if (is_zero(d) == true)
+		return (0);
+	else if (d > 0)
+		return (1);
+	else
+		return (-1);
 }
 
 double l2dist( double x0, double y0, double x1, double y1 )
 {
-	double dx = x0 - x1;
-	double dy = y0 - y1;
-	return sqrt(dx*dx + dy*dy);
+	double	dx;
+	double	dy;
+	
+	dx = x0 - x1;
+	dy = y0 - y1;
+	return (sqrt(dx * dx + dy * dy));
 }
 
 bool get_wall_intersection( double ray, double px, double py, dir_t* wdir, double* wx, double* wy )
@@ -45,10 +74,7 @@ bool get_wall_intersection( double ray, double px, double py, dir_t* wdir, doubl
 
 	double nx = (xstep > 0) ? floor(px)+1 : ((xstep < 0) ? ceil(px)-1 : px);
 	double ny = (ystep > 0) ? floor(py)+1 : ((ystep < 0) ? ceil(py)-1 : py);
-
-	// printf("\nray=%.2f deg, xstep=%d, ystep=%d, xslope=%.2f, yslope=%.2f, nx=%.2f, ny=%.2f\n",
-	// 	rad2deg(ray), xstep, ystep, xslope, yslope, nx, ny);
-
+	
 	double f=INFINITY, g=INFINITY;
 	bool hit = false;
 	int hit_side; /* either VERT or HORIZ */
@@ -102,21 +128,20 @@ bool get_wall_intersection( double ray, double px, double py, dir_t* wdir, doubl
 
 	return hit;
 }
-double
-cast_single_ray( int x, player_t pl, dir_t* wdir )
+double	cast_single_ray(int x, player_t pl, dir_t *wdir)
 {
-	double ray = (pl.th + FOVH_2) - (x * ANGLE_PER_PIXEL);
+	double	ray;
+	double	wx;
+	double	wy;
 
-	//dir_t wdir;     /* direction of wall */
-	double wx, wy;  /* coord. of wall intersection point */
-
+	ray = (pl.th + FOVH_2) - (x * ANGLE_PER_PIXEL);
 	if( get_wall_intersection(ray, pl.px, pl.py, wdir, &wx, &wy) == false )
-		return INFINITY; /* no intersection - maybe bad map? */
+		return (INFINITY); /* no intersection - maybe bad map? */
 
 	double wdist = l2dist(pl.px, pl.py, wx, wy);
 	wdist *= cos(pl.th - ray);  /* 보정 */
 
-	return wdist;
+	return (wdist);
 }
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
@@ -127,20 +152,22 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void
-player_rotate( player_t* pp, double th )
+void	player_rotate( player_t* pp, double th )
 {
     pp->th += th;
-    if( pp->th < 0 ) pp->th += _2PI;
-    else if( pp->th > _2PI ) pp->th -= _2PI;
+    if (pp->th < 0)
+		pp->th += _2PI;
+	else if( pp->th > _2PI )
+		pp->th -= _2PI;
 }
 
 
-int
-get_wall_height( double dist )
+int	get_wall_height( double dist )
 {
-	double fov_h = 2.0 * dist * tan(FOV_V/2.0);
-	return (int)(SY * (WALL_H / fov_h)); /* in pixels */
+	double fov_h;
+
+	fov_h = 2.0 * dist * tan(FOV_V/2.0);
+	return ((int)(SY * (WALL_H / fov_h))); /* in pixels */
 }
 
 
@@ -164,50 +191,65 @@ draw_wall( t_data img, double wdist, int x, int color )
 }
 
 
-void
-render( t_game *game )
+void	render( t_game *game )
 {
-	static int wall_colors[] = {    /* DIR_N, E, W, S */
-		0x00ccaaaa, 0x00aaccaa, 0x00aaaacc, 0x00bbbbbb
-	};
+	int loop;
+	int loop2;
+	dir_t wdir;
+	double wdist;
 
-	for (int i = 0; i < SX; i++) 
-		for (int j = 0; j < SY; j++)
-			my_mlx_pixel_put(&game->img, i, j, 0xFFFFFF);
-
-	for( int x=0; x<SX; x++ ) {
-		dir_t wdir;
-		double wdist = cast_single_ray(x, game->pl, &wdir);
-		draw_wall(game->img, wdist, x, wall_colors[wdir]);
+	loop = 0;
+	loop2 = 0;
+	while (loop < SX)
+	{
+		while (loop2 < SY)
+		{
+			my_mlx_pixel_put(&game->img, loop, loop2, 0xFFFFFF);
+			loop2++;
+		}
+		loop2 = 0;
+		loop++;
+	}
+	loop = 0;
+	while (loop < SX)
+	{
+		wdist = cast_single_ray(loop, game->pl, &wdir);
+		draw_wall(game->img, wdist, loop, wall_colors[wdir]);
+		loop++;
 	}
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img.img, 0, 0);
 }
 
-static int
-get_move_offset( double th, int key, double amt, double* pdx, double* pdy )
+static int get_move_offset( double th, int key, double amt, double* pdx, double* pdy )
 {
-    switch( key ) {
-        case KEY_W:
-        case KEY_S:
-            *pdx = (key==KEY_W ? 1 : -1) * amt * cos(th);
-            *pdy = (key==KEY_W ? 1 : -1) * amt * sin(th);
-            break;
-        case KEY_A:
-        case KEY_D:
-            *pdx = amt * cos(th + (key==KEY_A ? 1 : -1) * M_PI_2);
-            *pdy = amt * sin(th + (key==KEY_A ? 1 : -1) * M_PI_2);
-            break;
-        default: /* invalid */
-            return -1;
+	int sgn;
+
+	if (key == KEY_W || key == KEY_A)
+		sgn = 1;
+	else
+		sgn = -1;
+    if (key == KEY_W || key == KEY_S)
+	{
+		*pdx = sgn * amt * cos(th);
+        *pdy = sgn * amt * sin(th);
+	}
+	else if (key == KEY_A || key == KEY_D)
+	{
+	    *pdx = amt * cos(th + sgn * M_PI_2);
+        *pdy = amt * sin(th + sgn * M_PI_2);
     }
-    return 0;
+	else
+		return (-1);
+	return (0);
 }
 
 int
 player_move( player_t* pp, int key, double amt )
 {
-    double dx=0, dy=0;
-    double nx, ny;
+    double	dx; 
+	double	dy;
+    double	nx;
+	double	ny;
 
     if( get_move_offset(pp->th, key, amt, &dx, &dy) < 0 ) {
         fprintf(stderr,"player_move: invalid key %d\n", key);
@@ -231,10 +273,11 @@ int        key_press(int keycode, t_game *game)
 		player_rotate(&game->pl, ROT_UNIT * (keycode==KEY_LEFT ? 1 : -1));
 		render(game);
 	}
-	else if( keycode == KEY_W || keycode == KEY_A || keycode == KEY_S || keycode == KEY_D ) {
-		if( player_move(&game->pl, keycode, MOVE_UNIT) == 0 ) {
+	else if( keycode == KEY_W || keycode == KEY_A \
+		|| keycode == KEY_S || keycode == KEY_D )
+	{
+		if( player_move(&game->pl, keycode, MOVE_UNIT) == 0 ) 
 			render(game);
-		}
 	}
 	if (keycode == KEY_ESC)
 		exit(0);
@@ -247,60 +290,48 @@ int        exit_button(void)
 }
 
 
-int
-main( int ac, char** av )
+int game_initialize(t_game *game, char** av)
 {
-	t_game game;
+	game->pl.px = atof(av[1]);
+	game->pl.py = atof(av[2]);
+	game->pl.th = deg2rad(atof(av[3]));
+	game->mlx = mlx_init();
+	if (game->mlx == NULL)
+		return (0);
+	game->mlx_win = mlx_new_window(game->mlx, SX, SY, "cub3D"); 
+	if (game->mlx_win == NULL)
+		return (0);
+	game->img.img = mlx_new_image(game->mlx, SX, SY);
+	if (game->img.img == NULL)
+		return (0);
+	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bits_per_pixel, &game->img.line_length, &game->img.endian);
+	if (game->img.addr == NULL)
+		return (0);
+	return (1);
+}
 
+int input_check(int ac, char** av)
+{
 	if( ac != 4 ) {
 		fprintf(stderr,"usage: %s x y th(deg)\n", av[0]);
-		exit(1);
+		return (0);
 	}
+	return (1);
+}
 
-	game.pl.px = atof(av[1]);
-	game.pl.py = atof(av[2]);
-	game.pl.th = deg2rad(atof(av[3]));
+int	main(int ac, char** av)
+{
+	t_game	game;
 
-
-
-	double px, py, th;
-	px = atof(av[1]);
-	py = atof(av[2]);
-	th = deg2rad(atof(av[3]));
-
-	// /* print map */
-	// for( int y=MAPY-1; y>=0; y-- ) {
-	// 	for( int x=0; x<MAPX; x++ ) {
-	// 		printf("%c ", (map_get_cell(x,y)==1 ? '#':'.'));
-	// 	}
-	// 	putchar('\n');
-	// }
-
-	// for( int x=0; x<SX; x++ ) {
-	// 	dir_t wdir;
-	// 	double wdist = cast_single_ray(x, px, py, th, &wdir);
-	// 	printf("** ray %3d : dist %.2f\n", x, wdist);
-	// }
-
-	/* ... 중간생략 ... */
-
-	game.mlx = mlx_init();
-	game.mlx_win = mlx_new_window(game.mlx, SX, SY, "cub3D"); 
-	game.img.img = mlx_new_image(game.mlx, SX, SY);
-	game.img.addr = mlx_get_data_addr(game.img.img, &game.img.bits_per_pixel, &game.img.line_length, &game.img.endian);
-
+	if (input_check(ac, av) == 0)
+		exit(1);
+	if (game_initialize(&game, av) == 0)
+		exit(1);
 	render(&game);
-
-	// for( int x=0; x<SX; x++ ) {
-	//     dir_t wdir;
-	//     double wdist = cast_single_ray(x, game.pl, &wdir);
-	//     draw_wall(game.img, wdist, x, 0x999999);//wall_colors[wdir]);
-	// }
-
 	mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
 	mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);
 	mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, &game);
 	mlx_loop(game.mlx);
 
-	return 0;
+	return (0);
 }

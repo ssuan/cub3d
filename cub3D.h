@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/04/27 13:39:15 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/10 19:31:12 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@
 #define WIDTH TILES * COL
 #define HEIGHT TILES * ROW
 
-#define  EPS            (1e-06)
-#define  is_zero(d)     (fabs(d) < EPS)
 #define  deg2rad(d)     ((d)*M_PI/180.0)    /* degree to radian */
 #define  rad2deg(d)     ((d)*180.0/M_PI)    /* radian to degree */
 #define  min(a,b)       ((a)<(b)? (a):(b))
