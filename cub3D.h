@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/05/15 14:31:30 by sunbchoi@st      ###   ########.fr       */
-=======
-/*   Updated: 2022/05/15 14:39:48 by suan             ###   ########.fr       */
->>>>>>> 5c8f48d2e2d58342ed6b84db72d377ec713962d6
+/*   Updated: 2022/05/15 14:55:05 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +40,6 @@
 
 # define SUCCESS 1
 # define FAILURE 0
-# define TRUE 1
-# define FALSE 0
-
 
 #define TILES 60
 #define COL 15
@@ -101,17 +94,6 @@ typedef struct s_game
 	double per_angle;
 } t_game;
 
-<<<<<<< HEAD
-/* UTIL */
-
-int  ft_min(int val1, int val2);
-int  ft_max(int val1, int val2);
-// double deg2rad(double degree);
-// double rad2deg(double radian);
-int is_zero(double d);
-double l2dist( double x0, double y0, double x1, double y1);
-int sgn( double d );
-=======
 // 나중에 빼기
 typedef enum { false=0, true=1 } bool;
 typedef enum { DIR_N=0, DIR_E=1, DIR_W=2, DIR_S=3 } dir_t;
@@ -137,6 +119,5 @@ int is_zero(double d);
 int sgn( double d );
 double deg2rad(double degree);
 double rad2deg(double radian);
->>>>>>> 5c8f48d2e2d58342ed6b84db72d377ec713962d6
 
 #endif
