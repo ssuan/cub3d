@@ -2,14 +2,12 @@
 #include "mlx.h"
 
 static const double ANGLE_PER_PIXEL = FOV_H / (SX-1.);
-static const double FOVH_2 = FOV_H / 2.0;
 
 enum { VERT, HORIZ };
 
 int wall_colors[] = {    /* DIR_N, E, W, S */
 		0x00ccaaaa, 0x00aaccaa, 0x00aaaacc, 0x00bbbbbb
 	};
-
 
 typedef enum { false=0, true=1 } bool;
 typedef enum { DIR_N=0, DIR_E=1, DIR_W=2, DIR_S=3 } dir_t;
@@ -30,38 +28,6 @@ int	map_get_cell( int x, int y )
 		return map[x][y];
 	else
 		return (-1);
-}
-
-int is_zero(double d)
-{
-	double eps;
-
-	eps = 1e-06;
-	if (fabs(d) < eps)
-		return (1);
-	else
-		return (0);
-}
-
-
-int sgn( double d )
-{
-	if (is_zero(d) == true)
-		return (0);
-	else if (d > 0)
-		return (1);
-	else
-		return (-1);
-}
-
-double l2dist( double x0, double y0, double x1, double y1 )
-{
-	double	dx;
-	double	dy;
-	
-	dx = x0 - x1;
-	dy = y0 - y1;
-	return (sqrt(dx * dx + dy * dy));
 }
 
 bool get_wall_intersection( double ray, double px, double py, dir_t* wdir, double* wx, double* wy )
@@ -128,13 +94,15 @@ bool get_wall_intersection( double ray, double px, double py, dir_t* wdir, doubl
 
 	return hit;
 }
+
+
 double	cast_single_ray(int x, player_t pl, dir_t *wdir)
 {
 	double	ray;
 	double	wx;
 	double	wy;
 
-	ray = (pl.th + FOVH_2) - (x * ANGLE_PER_PIXEL);
+	ray = (pl.th + FOV_H / 2.0) - (x * ANGLE_PER_PIXEL);
 	if( get_wall_intersection(ray, pl.px, pl.py, wdir, &wx, &wy) == false )
 		return (INFINITY); /* no intersection - maybe bad map? */
 
@@ -243,8 +211,7 @@ static int get_move_offset( double th, int key, double amt, double* pdx, double*
 	return (0);
 }
 
-int
-player_move( player_t* pp, int key, double amt )
+int player_move( player_t* pp, int key, double amt )
 {
     double	dx; 
 	double	dy;
@@ -267,16 +234,20 @@ player_move( player_t* pp, int key, double amt )
     return 0;
 }
 
-int        key_press(int keycode, t_game *game)
+int	key_press(int keycode, t_game *game)
 {    
-	if( keycode == KEY_LEFT || keycode == KEY_RIGHT ) {
-		player_rotate(&game->pl, ROT_UNIT * (keycode==KEY_LEFT ? 1 : -1));
+	if( keycode == KEY_LEFT || keycode == KEY_RIGHT )
+	{
+		if (keycode == KEY_LEFT)
+			player_rotate(&game->pl, ROT_UNIT);
+		else
+			player_rotate(&game->pl, -ROT_UNIT);	
 		render(game);
 	}
 	else if( keycode == KEY_W || keycode == KEY_A \
 		|| keycode == KEY_S || keycode == KEY_D )
 	{
-		if( player_move(&game->pl, keycode, MOVE_UNIT) == 0 ) 
+		if(player_move(&game->pl, keycode, MOVE_UNIT) == 0) 
 			render(game);
 	}
 	if (keycode == KEY_ESC)
@@ -332,6 +303,5 @@ int	main(int ac, char** av)
 	mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);
 	mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, &game);
 	mlx_loop(game.mlx);
-
 	return (0);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+         #
+#    By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 14:46:27 by sunbchoi          #+#    #+#              #
-#    Updated: 2022/04/19 01:01:56 by suan             ###   ########.fr        #
+#    Updated: 2022/05/15 13:51:55 by sunbchoi@st      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ CC = gcc
 CFLAG = #-Wall -Wextra -Werror
 
 SRCS = src/main.c\
+		src/util.c\
 
 OBJS = $(SRCS:.c=.o)
 NAME = cub3D

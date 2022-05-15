@@ -6,7 +6,7 @@
 /*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/10 19:31:12 by sunbchoi@st      ###   ########.fr       */
+/*   Updated: 2022/05/15 13:45:06 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,13 @@
 #define WIDTH TILES * COL
 #define HEIGHT TILES * ROW
 
+//
 #define  deg2rad(d)     ((d)*M_PI/180.0)    /* degree to radian */
-#define  rad2deg(d)     ((d)*180.0/M_PI)    /* radian to degree */
+#define  rad2deg(d)     ((d)*180.0/M_PI)    /* radian to degree */ -> 함수
+
 #define  min(a,b)       ((a)<(b)? (a):(b))
 #define  max(a,b)       ((a)>(b)? (a):(b))
+
 
 #define  MAPX   6
 #define  MAPY   5
