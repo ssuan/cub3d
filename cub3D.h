@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 14:23:52 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/15 14:39:48 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@
 #define HEIGHT TILES * ROW
 
 //
-#define  deg2rad(d)     ((d)*M_PI/180.0)    /* degree to radian */
-#define  rad2deg(d)     ((d)*180.0/M_PI)    /* radian to degree */ -> 함수
+// #define  deg2rad(d)     ((d)*M_PI/180.0)    /* degree to radian */
+// #define  rad2deg(d)     ((d)*180.0/M_PI)    /* radian to degree */ -> 함수
 
 #define  min(a,b)       ((a)<(b)? (a):(b))
 #define  max(a,b)       ((a)>(b)? (a):(b))
@@ -114,5 +114,7 @@ bool get_wall_intersection( double ray, double px, double py, dir_t* wdir, doubl
 double l2dist( double x0, double y0, double x1, double y1 );
 int is_zero(double d);
 int sgn( double d );
+double deg2rad(double degree);
+double rad2deg(double radian);
 
 #endif
