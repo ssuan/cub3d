@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 17:01:06 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 17:04:08 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/15 17:17:55 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,14 @@ void	next_pos_init(player_t pl, t_pos *next, t_sector sect)
 		next->pos_y = pl.py;
 }
 
-void	get_next_map(t_sector *sect, t_pos next)
+void	get_next_map(t_sector *sect, t_pos next, player_t pl)
 {
+	if (sect->xstep != 0)
+		sect->f = sect->xslope * (next.pos_x - pl.px) + pl.py;
+	if (sect->ystep != 0)
+		sect->g = sect->yslope * (next.pos_y - pl.py) + pl.px;
+	sect->dist_v = l2dist(pl.px, pl.py, next.pos_x, sect->f);
+	sect->dist_h = l2dist(pl.px, pl.py, sect->g, next.pos_y);
 	if (sect->dist_v < sect->dist_h)
 	{
 		sect->mapx = (sect->xstep == 1) ? (int)(next.pos_x) : (int)(next.pos_x) - 1 ;
@@ -63,7 +69,7 @@ void	get_next_map(t_sector *sect, t_pos next)
 	}
 }
 
-void	hit_wall(t_sector sect, t_pos next, dir_t *wdir, t_pos *wpos)
+static bool	hit_wall(t_sector sect, t_pos next, dir_t *wdir, t_pos *wpos)
 {
 	if (sect.hit_side == VERT)
 	{
@@ -78,6 +84,7 @@ void	hit_wall(t_sector sect, t_pos next, dir_t *wdir, t_pos *wpos)
 		wpos->pos_y = next.pos_y;
 	}
 	printf(" hit wall!\n");
+	return (true);
 }
 
 bool	get_wall_intersection(double ray, player_t pl, dir_t *wdir, t_pos *wpos)
@@ -92,20 +99,13 @@ bool	get_wall_intersection(double ray, player_t pl, dir_t *wdir, t_pos *wpos)
 	next_pos_init(pl, &next, sect);
 	while (!hit)
 	{
-		if (sect.xstep != 0)
-			sect.f = sect.xslope * (next.pos_x - pl.px) + pl.py;
-		if (sect.ystep != 0)
-			sect.g = sect.yslope * (next.pos_y - pl.py) + pl.px;
-		sect.dist_v = l2dist(pl.px, pl.py, next.pos_x, sect.f);
-		sect.dist_h = l2dist(pl.px, pl.py, sect.g, next.pos_y);
-		get_next_map(&sect, next);
+		get_next_map(&sect, next, pl);
 		cell = map_get_cell(sect.mapx, sect.mapy);
 		if (cell < 0)
 			break ;
 		if (cell == 1)
 		{
-			hit_wall(sect, next, wdir, wpos);
-			hit = true;
+			hit = hit_wall(sect, next, wdir, wpos);
 			break ;
 		}
 		if (sect.hit_side == VERT)
