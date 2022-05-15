@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+         #
+#    By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 14:46:27 by sunbchoi          #+#    #+#              #
-#    Updated: 2022/05/15 13:51:55 by sunbchoi@st      ###   ########.fr        #
+#    Updated: 2022/05/15 14:20:56 by suan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,9 @@ CC = gcc
 CFLAG = #-Wall -Wextra -Werror
 
 SRCS = src/main.c\
+		src/player.c\
+		src/ray.c\
+		src/draw.c\
 		src/util.c\
 
 OBJS = $(SRCS:.c=.o)
