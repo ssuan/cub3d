@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 17:01:06 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 17:17:55 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/15 17:26:01 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ void	get_next_map(t_sector *sect, t_pos next, player_t pl)
 	sect->dist_h = l2dist(pl.px, pl.py, sect->g, next.pos_y);
 	if (sect->dist_v < sect->dist_h)
 	{
-		sect->mapx = (sect->xstep == 1) ? (int)(next.pos_x) : (int)(next.pos_x) - 1 ;
+		sect->mapx = (int)(next.pos_x);
+		if (sect->xstep != 1)
+			sect->mapx -= 1;
 		sect->mapy = (int) sect->f;
 		sect->hit_side = VERT;
 		printf(" V(%d, %.2f) ->", sect->mapx, sect->f);
@@ -63,7 +65,9 @@ void	get_next_map(t_sector *sect, t_pos next, player_t pl)
 	else
 	{
 		sect->mapx = (int) sect->g;
-		sect->mapy = (sect->ystep == 1) ? (int)(next.pos_y) : (int)(next.pos_y) - 1 ;
+		sect->mapy = (int)(next.pos_y);
+		if (sect->ystep != 1)
+			sect->mapy -= 1;
 		sect->hit_side = HORIZ;
 		printf(" H(%.2f, %d) ->", sect->g, sect->mapy);
 	}
@@ -73,13 +77,19 @@ static bool	hit_wall(t_sector sect, t_pos next, dir_t *wdir, t_pos *wpos)
 {
 	if (sect.hit_side == VERT)
 	{
-		*wdir = (sect.xstep > 0) ? DIR_W : DIR_E;
+		if (sect.xstep > 0)
+			*wdir = DIR_W;
+		else
+			*wdir = DIR_E;
 		wpos->pos_x = next.pos_x;
 		wpos->pos_y = sect.f;
 	}
 	else
 	{
-		*wdir = (sect.ystep > 0) ? DIR_S : DIR_N;
+		if (sect.ystep > 0)
+			*wdir = DIR_S;
+		else
+			*wdir = DIR_N;
 		wpos->pos_x = sect.g;
 		wpos->pos_y = next.pos_y;
 	}

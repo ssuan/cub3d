@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
+/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:28:30 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 16:06:31 by sunbchoi@st      ###   ########.fr       */
+/*   Updated: 2022/05/15 17:31:07 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-static int	get_move_offset(double th, int key, double amt, double *pdx, double *pdy)
+static int	get_move_offset(double th, int key, double amt, t_pos *dpos)
 {
 	int	sgn;
 
@@ -22,13 +22,13 @@ static int	get_move_offset(double th, int key, double amt, double *pdx, double *
 		sgn = -1;
 	if (key == KEY_W || key == KEY_S)
 	{
-		*pdx = sgn * amt * cos(th);
-		*pdy = sgn * amt * sin(th);
+		dpos->pos_x = sgn * amt * cos(th);
+		dpos->pos_y = sgn * amt * sin(th);
 	}
 	else if (key == KEY_A || key == KEY_D)
 	{
-		*pdx = amt * cos(th + sgn * M_PI_2);
-		*pdy = amt * sin(th + sgn * M_PI_2);
+		dpos->pos_x = amt * cos(th + sgn * M_PI_2);
+		dpos->pos_y = amt * sin(th + sgn * M_PI_2);
 	}
 	else
 		return (-1);
@@ -37,20 +37,19 @@ static int	get_move_offset(double th, int key, double amt, double *pdx, double *
 
 int	player_move(player_t *pp, int key, double amt)
 {
-	double	dx;
-	double	dy;
+	t_pos	dpos;
 	double	nx;
 	double	ny;
 
-	dx = 0;
-	dy = 0;
-	if (get_move_offset(pp->th, key, amt, &dx, &dy) < 0)
+	dpos.pos_x = 0;
+	dpos.pos_y = 0;
+	if (get_move_offset(pp->th, key, amt, &dpos) < 0)
 	{
 		fprintf(stderr, "player_move: invalid key %d\n", key);
 		return (-1);
 	}
-	nx = pp->px + dx;
-	ny = pp->py + dy;
+	nx = pp->px + dpos.pos_x;
+	ny = pp->py + dpos.pos_y;
 	if (map_get_cell((int)nx, (int)ny) != 0)
 	{
 		printf("** bump !\n");

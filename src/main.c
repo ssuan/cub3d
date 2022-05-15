@@ -6,13 +6,14 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 17:00:42 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/15 17:27:21 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-static int	map[MAPX][MAPY] = {
+// 빼기
+static int	g_map[MAPX][MAPY] = {
 	{1, 1, 1, 1, 1},
 	{1, 0, 0, 0, 1},
 	{1, 0, 0, 0, 1},
@@ -26,7 +27,7 @@ int	map_get_cell( int x, int y )
 {
 	if ((x >= 0 && x < MAPX) \
 		&& (y >= 0 && y < MAPY))
-		return (map[x][y]);
+		return (g_map[x][y]);
 	else
 		return (-1);
 }
