@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
+/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:27:37 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 15:17:27 by sunbchoi@st      ###   ########.fr       */
+/*   Updated: 2022/05/15 15:25:39 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-static int	get_wall_height( t_game *game, double dist )
+static int	get_wall_height(t_game *game, double dist)
 {
 	double	fov_h;
 
@@ -36,7 +36,7 @@ static int	get_wall_height( t_game *game, double dist )
 }
 
 //wall
-static void	draw_wall( t_game *game, double wdist, int x, int color )
+static void	draw_wall(t_game *game, double wdist, int x, int color)
 {
 	int	wh;
 	int	y0;
@@ -57,7 +57,7 @@ static void	draw_wall( t_game *game, double wdist, int x, int color )
 }
 
 //draw
-void	render( t_game *game )
+void	render(t_game *game)
 {
 	int		loop;
 	int		loop2;

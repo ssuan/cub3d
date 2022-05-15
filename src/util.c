@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
+/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 13:46:20 by sunbchoi@st       #+#    #+#             */
-/*   Updated: 2022/05/15 14:57:17 by sunbchoi@st      ###   ########.fr       */
+/*   Updated: 2022/05/15 15:23:42 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,3 @@ double	rad2deg(double radian)
 {
 	return ((radian) * 180.0 / M_PI);
 }
-
