@@ -3,22 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
+/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 13:46:20 by sunbchoi@st       #+#    #+#             */
-/*   Updated: 2022/05/15 13:51:33 by sunbchoi@st      ###   ########.fr       */
+/*   Updated: 2022/05/15 14:20:15 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-#include "mlx.h"
 
-ft_min
-ft_max
-
-#define  deg2rad(d)     ((d)*M_PI/180.0)    /* degree to radian */
-#define  rad2deg(d)     ((d)*180.0/M_PI)    /* radian to degree */ -> 함수
-
+//math? util?
 int is_zero(double d)
 {
 	double eps;
@@ -30,6 +24,18 @@ int is_zero(double d)
 		return (0);
 }
 
+//math? util?
+int sgn( double d )
+{
+	if (is_zero(d) == true)
+		return (0);
+	else if (d > 0)
+		return (1);
+	else
+		return (-1);
+}
+
+//math
 double l2dist( double x0, double y0, double x1, double y1 )
 {
 	double	dx;
@@ -40,12 +46,8 @@ double l2dist( double x0, double y0, double x1, double y1 )
 	return (sqrt(dx * dx + dy * dy));
 }
 
-int sgn( double d )
-{
-	if (is_zero(d) == true)
-		return (0);
-	else if (d > 0)
-		return (1);
-	else
-		return (-1);
-}
+// ft_min
+// ft_max
+
+// #define  deg2rad(d)     ((d)*M_PI/180.0)    /* degree to radian */
+// #define  rad2deg(d)     ((d)*180.0/M_PI)    /* radian to degree */ -> 함수

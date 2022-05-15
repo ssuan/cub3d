@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
+/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 13:45:06 by sunbchoi@st      ###   ########.fr       */
+/*   Updated: 2022/05/15 14:23:52 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include "./libft/libft.h"
+# include "mlx.h"
 
 # define ITEM_KEY "10CPE"
 
@@ -89,5 +90,29 @@ typedef struct s_game
 	player_t pl;
 	t_data	img;
 } t_game;
+
+// 나중에 빼기
+typedef enum { false=0, true=1 } bool;
+typedef enum { DIR_N=0, DIR_E=1, DIR_W=2, DIR_S=3 } dir_t;
+
+
+// player
+void	player_rotate( player_t* pp, double th );
+int player_move( player_t* pp, int key, double amt );
+
+// ray
+double	cast_single_ray(int x, player_t pl, dir_t *wdir);
+
+int	map_get_cell( int x, int y );
+
+// draw
+void	render( t_game *game );
+
+bool get_wall_intersection( double ray, double px, double py, dir_t* wdir, double* wx, double* wy );
+
+// util 
+double l2dist( double x0, double y0, double x1, double y1 );
+int is_zero(double d);
+int sgn( double d );
 
 #endif

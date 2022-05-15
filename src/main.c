@@ -1,18 +1,7 @@
 #include "cub3D.h"
 #include "mlx.h"
 
-static const double ANGLE_PER_PIXEL = FOV_H / (SX-1.);
-static const double FOVH_2 = FOV_H / 2.0;
-
 enum { VERT, HORIZ };
-
-int wall_colors[] = {    /* DIR_N, E, W, S */
-		0x00ccaaaa, 0x00aaccaa, 0x00aaaacc, 0x00bbbbbb
-	};
-
-
-typedef enum { false=0, true=1 } bool;
-typedef enum { DIR_N=0, DIR_E=1, DIR_W=2, DIR_S=3 } dir_t;
 
 static int map[MAPX][MAPY] = {  /* warning: index order is [x][y] */
 	{1,1,1,1,1}, /* [0][*] */
@@ -23,6 +12,7 @@ static int map[MAPX][MAPY] = {  /* warning: index order is [x][y] */
 	{1,1,1,1,1}
 };
 
+//chk
 int	map_get_cell( int x, int y )
 {
 	if ((x >= 0 && x < MAPX) \
@@ -30,37 +20,6 @@ int	map_get_cell( int x, int y )
 		return map[x][y];
 	else
 		return (-1);
-}
-
-int is_zero(double d)
-{
-	double eps;
-
-	eps = 1e-06;
-	if (fabs(d) < eps)
-		return (1);
-	else
-		return (0);
-}
-
-int sgn( double d )
-{
-	if (is_zero(d) == true)
-		return (0);
-	else if (d > 0)
-		return (1);
-	else
-		return (-1);
-}
-
-double l2dist( double x0, double y0, double x1, double y1 )
-{
-	double	dx;
-	double	dy;
-	
-	dx = x0 - x1;
-	dy = y0 - y1;
-	return (sqrt(dx * dx + dy * dy));
 }
 
 bool get_wall_intersection( double ray, double px, double py, dir_t* wdir, double* wx, double* wy )
@@ -127,148 +86,7 @@ bool get_wall_intersection( double ray, double px, double py, dir_t* wdir, doubl
 
 	return hit;
 }
-double	cast_single_ray(int x, player_t pl, dir_t *wdir)
-{
-	double	ray;
-	double	wx;
-	double	wy;
 
-	ray = (pl.th + FOVH_2) - (x * ANGLE_PER_PIXEL);
-	if( get_wall_intersection(ray, pl.px, pl.py, wdir, &wx, &wy) == false )
-		return (INFINITY); /* no intersection - maybe bad map? */
-	double wdist = l2dist(pl.px, pl.py, wx, wy);
-	wdist *= cos(pl.th - ray);  /* 보정 */
-
-	return (wdist);
-}
-
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
-
-void	player_rotate( player_t* pp, double th )
-{
-    pp->th += th;
-    if (pp->th < 0)
-		pp->th += _2PI;
-	else if( pp->th > _2PI )
-		pp->th -= _2PI;
-}
-
-
-int	get_wall_height( double dist )
-{
-	double fov_h;
-
-	fov_h = 2.0 * dist * tan(FOV_V/2.0);
-	return ((int)(SY * (WALL_H / fov_h))); /* in pixels */
-}
-
-
-void
-draw_wall( t_data img, double wdist, int x, int color )
-{
-	int	wh;
-	int	y0;
-	int	y1;
-	int	ystart;
-	int	yend;
-
-	wh = get_wall_height(wdist);
-	y0 = (int)((SY - wh) / 2.0);
-	y1 = y0 + wh - 1;
-	ystart = max(0, y0);
-	yend = min(SY - 1, y1);
-	while (ystart < yend)
-	{
-		my_mlx_pixel_put(&img, x, ystart, color);
-		ystart++;
-	}
-}
-
-
-void	render( t_game *game )
-{
-	int loop;
-	int loop2;
-	dir_t wdir;
-	double wdist;
-
-	loop = 0;
-	loop2 = 0;
-	while (loop < SX)
-	{
-		while (loop2 < SY)
-		{
-			my_mlx_pixel_put(&game->img, loop, loop2, 0xFFFFFF);
-			loop2++;
-		}
-		loop2 = 0;
-		loop++;
-	}
-	loop = 0;
-	while (loop < SX)
-	{
-		wdist = cast_single_ray(loop, game->pl, &wdir);
-		draw_wall(game->img, wdist, loop, wall_colors[wdir]);
-		loop++;
-	}
-	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img.img, 0, 0);
-}
-
-static int get_move_offset( double th, int key, double amt, double* pdx, double* pdy )
-{
-	int sgn;
-
-	if (key == KEY_W || key == KEY_A)
-		sgn = 1;
-	else
-		sgn = -1;
-    if (key == KEY_W || key == KEY_S)
-	{
-		*pdx = sgn * amt * cos(th);
-        *pdy = sgn * amt * sin(th);
-	}
-	else if (key == KEY_A || key == KEY_D)
-	{
-	    *pdx = amt * cos(th + sgn * M_PI_2);
-        *pdy = amt * sin(th + sgn * M_PI_2);
-    }
-	else
-		return (-1);
-	return (0);
-}
-
-int
-player_move( player_t* pp, int key, double amt )
-{
-    double	dx; 
-	double	dy;
-    double	nx;
-	double	ny;
-
-	dx = 0;
-	dy = 0;
-    if( get_move_offset(pp->th, key, amt, &dx, &dy) < 0 ) 
-	{
-        fprintf(stderr,"player_move: invalid key %d\n", key);
-        return (-1);
-    }
-    nx = pp->px + dx;
-    ny = pp->py + dy;
-    if( map_get_cell((int)nx, (int)ny) != 0 )
-	{
-        printf("** bump !\n");
-        return -1;
-    }
-    pp->px = nx;
-    pp->py = ny;
-    return 0;
-}
 
 int        key_press(int keycode, t_game *game)
 {    
@@ -291,7 +109,6 @@ int        exit_button(void)
 {
 	exit(0);
 }
-
 
 int game_initialize(t_game *game, char** av)
 {
