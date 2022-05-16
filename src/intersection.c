@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 17:01:06 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 17:26:01 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/16 14:04:33 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ bool	get_wall_intersection(double ray, player_t pl, dir_t *wdir, t_pos *wpos)
 	t_sector	sect;
 	t_pos		next;
 	bool		hit;
-	int			cell;
+	char		cell;
 
 	hit = false;
 	init_sect(&sect, ray);
@@ -113,7 +113,7 @@ bool	get_wall_intersection(double ray, player_t pl, dir_t *wdir, t_pos *wpos)
 		cell = map_get_cell(sect.mapx, sect.mapy);
 		if (cell < 0)
 			break ;
-		if (cell == 1)
+		if (cell == '1')
 		{
 			hit = hit_wall(sect, next, wdir, wpos);
 			break ;

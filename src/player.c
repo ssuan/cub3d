@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:28:30 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 17:31:07 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/16 14:24:37 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	player_move(player_t *pp, int key, double amt)
 	}
 	nx = pp->px + dpos.pos_x;
 	ny = pp->py + dpos.pos_y;
-	if (map_get_cell((int)nx, (int)ny) != 0)
+	if (map_get_cell((int)nx, (int)ny) != '0')
 	{
 		printf("** bump !\n");
 		return (-1);

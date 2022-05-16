@@ -6,31 +6,11 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 17:27:21 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/16 14:44:33 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-// 빼기
-static int	g_map[MAPX][MAPY] = {
-	{1, 1, 1, 1, 1},
-	{1, 0, 0, 0, 1},
-	{1, 0, 0, 0, 1},
-	{1, 1, 0, 0, 1},
-	{1, 1, 0, 0, 1},
-	{1, 1, 1, 1, 1}
-};
-
-//chk
-int	map_get_cell( int x, int y )
-{
-	if ((x >= 0 && x < MAPX) \
-		&& (y >= 0 && y < MAPY))
-		return (g_map[x][y]);
-	else
-		return (-1);
-}
 
 int	key_press(int keycode, t_game *game)
 {
@@ -82,22 +62,13 @@ int	game_initialize(t_game *game, char **av)
 	return (1);
 }
 
-int	input_check(int ac, char **av)
-{
-	if (ac != 4)
-	{
-		fprintf(stderr, "usage: %s x y th(deg)\n", av[0]);
-		return (0);
-	}
-	return (1);
-}
-
 int	main(int ac, char **av)
 {
 	t_game	game;
 
 	if (input_check(ac, av) == 0)
 		exit(1);
+	map_check();
 	if (game_initialize(&game, av) == 0)
 		exit(1);
 	render(&game);

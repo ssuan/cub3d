@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 16:58:49 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/16 14:44:37 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,10 @@ int player_move( player_t* pp, int key, double amt );
 // ray
 double	cast_single_ray(int x, t_game *game, dir_t *wdir);
 
-int	map_get_cell( int x, int y );
+// check
+char	map_get_cell( int x, int y );
+void	map_check(void);
+int		input_check(int ac, char **av);
 
 // draw
 void	render( t_game *game );
