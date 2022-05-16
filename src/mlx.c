@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray.c                                              :+:      :+:    :+:   */
+/*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/15 14:32:03 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 20:01:26 by suan             ###   ########.fr       */
+/*   Created: 2022/05/16 20:27:40 by suan              #+#    #+#             */
+/*   Updated: 2022/05/16 20:27:50 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-//ray
-// wdir, pos(wpod) -> game으로?
-double	cast_single_ray(int x, t_game *game, dir_t *wdir, t_pos *pos)
+//mlx
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
-	double	ray;
-	double	wdist;
+	char	*dst;
 
-	ray = (game->pl.th + (game->fov_h / 2.0)) - (x * game->per_angle);
-	if (!(get_wall_intersection(ray, game->pl, wdir, pos)))
-		return (INFINITY);
-	wdist = l2dist(game->pl.px, game->pl.py, pos->x, pos->y);
-	wdist *= cos(game->pl.th - ray);
-	return (wdist);
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
 }

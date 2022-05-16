@@ -6,30 +6,11 @@
 /*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 22:01:45 by sunbchoi@st      ###   ########.fr       */
+/*   Updated: 2022/05/16 22:06:14 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-static int	map[MAPX][MAPY] = {
-	{1, 1, 1, 1, 1},
-	{1, 0, 0, 0, 1},
-	{1, 0, 0, 0, 1},
-	{1, 1, 0, 0, 1},
-	{1, 1, 0, 0, 1},
-	{1, 1, 1, 1, 1}
-};
-
-//chk
-int	map_get_cell( int x, int y )
-{
-	if ((x >= 0 && x < MAPX) \
-		&& (y >= 0 && y < MAPY))
-		return (map[x][y]);
-	else
-		return (-1);
-}
 
 int	key_press(int keycode, t_game *game)
 {
@@ -48,12 +29,17 @@ int	key_press(int keycode, t_game *game)
 			render(game);
 	}
 	if (keycode == KEY_ESC)
+	{
+		for (int i = 0; i < 4; i++)
+			mlx_destroy_image(game->mlx, game->wall[i].img);
 		exit(0);
+	}
 	return (0);
 }
 
 int	exit_button(void)
 {
+//	mlx_destroy_image(game->mlx, img->img);
 	exit(0);
 }
 
@@ -115,14 +101,14 @@ int	main(int ac, char **av)
 	ft_memset(&game, 0, sizeof(t_game));
 	if (input_check(ac, av) == 0)
 		exit(1);
-	read_cub(av[1], &game);
-	
-	// if (game_initialize(&game, av) == 0)
-	// 	exit(1);
-	//render(&game);
-	// mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
-	// mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);
-	// mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, &game);
-	// mlx_loop(game.mlx);
+	map_check();
+	if (game_initialize(&game, av) == 0)
+		exit(1);
+	load_texture(&game);
+	render(&game);
+	mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
+	mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);
+	mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, &game);
+	mlx_loop(game.mlx);
 	return (0);
 }

@@ -1,28 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray.c                                              :+:      :+:    :+:   */
+/*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/15 14:32:03 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 20:01:26 by suan             ###   ########.fr       */
+/*   Created: 2022/05/16 20:25:21 by suan              #+#    #+#             */
+/*   Updated: 2022/05/16 20:29:18 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-//ray
-// wdir, pos(wpod) -> game으로?
-double	cast_single_ray(int x, t_game *game, dir_t *wdir, t_pos *pos)
+//draw
+void	render(t_game *game)
 {
-	double	ray;
+	int		x;
+	int		y;
+	dir_t	wdir;
 	double	wdist;
+	t_pos	wpos;
 
-	ray = (game->pl.th + (game->fov_h / 2.0)) - (x * game->per_angle);
-	if (!(get_wall_intersection(ray, game->pl, wdir, pos)))
-		return (INFINITY);
-	wdist = l2dist(game->pl.px, game->pl.py, pos->x, pos->y);
-	wdist *= cos(game->pl.th - ray);
-	return (wdist);
+	x = 0;
+	while (x < SX)
+	{
+		y = 0;
+		while (y < SY)
+		{
+			my_mlx_pixel_put(&game->img, x, y, 0xFFFFFF);
+			y++;
+		}
+		x++;
+	}
+	x = 0;
+	while (x < SX)
+	{
+		wdist = cast_single_ray(x, game, &wdir, &wpos);
+		draw(game, wdist, x, wdir, &wpos);
+		x++;
+	}
+	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img.img, 0, 0);
 }

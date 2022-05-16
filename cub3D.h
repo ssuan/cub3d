@@ -6,7 +6,7 @@
 /*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 21:54:38 by sunbchoi@st      ###   ########.fr       */
+/*   Updated: 2022/05/16 22:06:08 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,27 @@ typedef struct {
 } player_t;
 
 typedef struct	s_pos{
-	double pos_x;
-	double pos_y;
+	double x;
+	double y;
 }				t_pos;
 
+// data, img 하나로 
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
+
+typedef struct s_img {
+    int w, h;
+    void*	img;  /* SDL specific image data */
+	unsigned int	*data;
+	int				bpp;
+	int				size_l;
+	int				endian;
+} t_img;
 
 typedef struct	s_sector{
 	int xstep;
@@ -124,9 +141,10 @@ typedef struct s_game
 	player_t pl;
 	t_data	img;
 	t_map	map;
+	t_img	wall[4];
 	double fov_h;
 	double fov_v;
-	double per_angle;
+	double per_angle; 
 } t_game;
 
 // 나중에 빼기
@@ -138,14 +156,21 @@ void	player_rotate( player_t* pp, double th );
 int player_move( player_t* pp, int key, double amt );
 
 // ray
-double	cast_single_ray(int x, t_game *game, dir_t *wdir);
+double	cast_single_ray(int x, t_game *game, dir_t *wdir, t_pos *pos);
 
-int	map_get_cell( int x, int y );
+// check
+char	map_get_cell( int x, int y );
+void	map_check(void);
+int		input_check(int ac, char **av);
 
 // draw
-void	render( t_game *game );
+void	draw(t_game *game, double wdist, int x, dir_t wdir, t_pos *wpos);
 
-bool get_wall_intersection( double ray, player_t pl, dir_t* wdir, t_pos *wpos);
+// render
+void	render(t_game *game);
+
+// mlx
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 // util 
 double l2dist( double x0, double y0, double x1, double y1 );

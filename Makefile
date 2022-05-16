@@ -6,7 +6,11 @@
 #    By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 14:46:27 by sunbchoi          #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2022/05/16 21:58:55 by sunbchoi@st      ###   ########.fr        #
+=======
+#    Updated: 2022/05/16 20:29:05 by suan             ###   ########.fr        #
+>>>>>>> 124e741fd2fcc262e83ef4e71bae5341d70ea17d
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +23,18 @@ SRCS = src/main.c\
 		src/draw.c\
 		src/util.c\
 		src/intersection.c\
+<<<<<<< HEAD
 		src/read_cub.c\
 		src/read_img.c\
 		src/read_rgb.c\
 		src/read_map.c\
 		src/error.c\
+=======
+		src/check.c\
+		src/load.c\
+		src/render.c\
+		src/mlx.c\
+>>>>>>> 124e741fd2fcc262e83ef4e71bae5341d70ea17d
 
 OBJS = $(SRCS:.c=.o)
 NAME = cub3D
