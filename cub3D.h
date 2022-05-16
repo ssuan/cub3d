@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 16:58:49 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/16 21:54:38 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,24 @@ typedef struct	s_data {
 	int		endian;
 }				t_data;
 
+//xpm 배열 [NO SO WE EA] 북 남 서 동
+typedef struct	s_map 
+{
+	int floor_color;
+	int ceil_color;
+	char map[1000][1000];
+	int max_lenX;
+	int max_lenY;
+	void *xpm[4];
+}	t_map;
+
 typedef struct s_game
 {
 	void	*mlx;
 	void	*mlx_win;
 	player_t pl;
 	t_data	img;
+	t_map	map;
 	double fov_h;
 	double fov_v;
 	double per_angle;
@@ -120,7 +132,6 @@ typedef struct s_game
 // 나중에 빼기
 typedef enum { false=0, true=1 } bool;
 typedef enum { DIR_N=0, DIR_E=1, DIR_W=2, DIR_S=3 } dir_t;
-
 
 // player
 void	player_rotate( player_t* pp, double th );
@@ -145,5 +156,15 @@ double rad2deg(double radian);
 
 // intersection
 bool	get_wall_intersection(double ray, player_t pl, dir_t *wdir, t_pos *wpos);
+
+
+// cub
+void	read_cub(char *cub, t_game *game);
+int	read_img(int fd, t_game *game);
+int	read_rgb(int fd, t_game *game);
+int	read_map(int fd, t_game *game);
+
+// error
+int	error(char *msg);
 
 #endif

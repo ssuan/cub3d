@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 17:00:42 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/16 22:01:45 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ int	exit_button(void)
 
 int	game_initialize(t_game *game, char **av)
 {
-	game->pl.px = atof(av[1]);
-	game->pl.py = atof(av[2]);
-	game->pl.th = deg2rad(atof(av[3]));
+	// game->pl.px = atof(av[1]);
+	// game->pl.py = atof(av[2]);
+	// game->pl.th = deg2rad(atof(av[3]));
 	game->mlx = mlx_init();
 	game->fov_h = deg2rad(FOV);
 	game->fov_v = (game->fov_h * (double)SY / (double)SX);
@@ -83,11 +83,28 @@ int	game_initialize(t_game *game, char **av)
 
 int	input_check(int ac, char **av)
 {
-	if (ac != 4)
+	// if (ac != 4)
+	// {
+	// 	fprintf(stderr, "usage: %s x y th(deg)\n", av[0]);
+	// 	return (0);
+	// }
+	
+	char	*map_ext;
+
+	if (ac < 2 || ft_strlen(av[1]) == 0)
 	{
-		fprintf(stderr, "usage: %s x y th(deg)\n", av[0]);
-		return (0);
+		perror("Please enter the name of the map file you want to use.\n\
+			Ex: ./maps/map.cub");
 	}
+	else if (ac > 2)
+	{
+		perror("Too many argument entered. Please retry it again.\n\
+			Ex: ./maps/map.cub");
+	}
+	map_ext = ft_strrchr(av[1], '.');
+	if ((ft_strstr(map_ext, ".cub") == NULL) \
+		|| (ft_strlen(map_ext) != ft_strlen(".cub")))
+		perror("Invalid map extension. Please Enter *.cub");
 	return (1);
 }
 
@@ -95,14 +112,17 @@ int	main(int ac, char **av)
 {
 	t_game	game;
 
+	ft_memset(&game, 0, sizeof(t_game));
 	if (input_check(ac, av) == 0)
 		exit(1);
-	if (game_initialize(&game, av) == 0)
-		exit(1);
-	render(&game);
-	mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
-	mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);
-	mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, &game);
-	mlx_loop(game.mlx);
+	read_cub(av[1], &game);
+	
+	// if (game_initialize(&game, av) == 0)
+	// 	exit(1);
+	//render(&game);
+	// mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
+	// mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);
+	// mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, &game);
+	// mlx_loop(game.mlx);
 	return (0);
 }
