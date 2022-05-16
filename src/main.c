@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 14:44:33 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/16 19:48:14 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,17 @@ int	key_press(int keycode, t_game *game)
 			render(game);
 	}
 	if (keycode == KEY_ESC)
+	{
+		for (int i = 0; i < 4; i++)
+			mlx_destroy_image(game->mlx, game->wall[i].img);
 		exit(0);
+	}
 	return (0);
 }
 
 int	exit_button(void)
 {
+//	mlx_destroy_image(game->mlx, img->img);
 	exit(0);
 }
 
@@ -71,6 +76,7 @@ int	main(int ac, char **av)
 	map_check();
 	if (game_initialize(&game, av) == 0)
 		exit(1);
+	load_texture(&game);
 	render(&game);
 	mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
 	mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);

@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:28:30 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 14:24:37 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/16 20:26:10 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ static int	get_move_offset(double th, int key, double amt, t_pos *dpos)
 		sgn = -1;
 	if (key == KEY_W || key == KEY_S)
 	{
-		dpos->pos_x = sgn * amt * cos(th);
-		dpos->pos_y = sgn * amt * sin(th);
+		dpos->x = sgn * amt * cos(th);
+		dpos->y = sgn * amt * sin(th);
 	}
 	else if (key == KEY_A || key == KEY_D)
 	{
-		dpos->pos_x = amt * cos(th + sgn * M_PI_2);
-		dpos->pos_y = amt * sin(th + sgn * M_PI_2);
+		dpos->x = amt * cos(th + sgn * M_PI_2);
+		dpos->y = amt * sin(th + sgn * M_PI_2);
 	}
 	else
 		return (-1);
@@ -41,15 +41,15 @@ int	player_move(player_t *pp, int key, double amt)
 	double	nx;
 	double	ny;
 
-	dpos.pos_x = 0;
-	dpos.pos_y = 0;
+	dpos.x = 0;
+	dpos.y = 0;
 	if (get_move_offset(pp->th, key, amt, &dpos) < 0)
 	{
 		fprintf(stderr, "player_move: invalid key %d\n", key);
 		return (-1);
 	}
-	nx = pp->px + dpos.pos_x;
-	ny = pp->py + dpos.pos_y;
+	nx = pp->px + dpos.x;
+	ny = pp->py + dpos.y;
 	if (map_get_cell((int)nx, (int)ny) != '0')
 	{
 		printf("** bump !\n");

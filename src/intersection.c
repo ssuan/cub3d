@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 17:01:06 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 14:04:33 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/16 20:26:25 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,30 @@ void	init_sect(t_sector *sect, double ray)
 void	next_pos_init(player_t pl, t_pos *next, t_sector sect)
 {
 	if (sect.xstep > 0)
-		next->pos_x = floor(pl.px) + 1;
+		next->x = floor(pl.px) + 1;
 	else if (sect.xstep < 0)
-		next->pos_x = ceil(pl.px) - 1;
+		next->x = ceil(pl.px) - 1;
 	else
-		next->pos_x = pl.px;
+		next->x = pl.px;
 	if (sect.ystep > 0)
-		next->pos_y = floor(pl.py) + 1;
+		next->y = floor(pl.py) + 1;
 	else if (sect.ystep < 0)
-		next->pos_y = ceil(pl.py) - 1;
+		next->y = ceil(pl.py) - 1;
 	else
-		next->pos_y = pl.py;
+		next->y = pl.py;
 }
 
 void	get_next_map(t_sector *sect, t_pos next, player_t pl)
 {
 	if (sect->xstep != 0)
-		sect->f = sect->xslope * (next.pos_x - pl.px) + pl.py;
+		sect->f = sect->xslope * (next.x - pl.px) + pl.py;
 	if (sect->ystep != 0)
-		sect->g = sect->yslope * (next.pos_y - pl.py) + pl.px;
-	sect->dist_v = l2dist(pl.px, pl.py, next.pos_x, sect->f);
-	sect->dist_h = l2dist(pl.px, pl.py, sect->g, next.pos_y);
+		sect->g = sect->yslope * (next.y - pl.py) + pl.px;
+	sect->dist_v = l2dist(pl.px, pl.py, next.x, sect->f);
+	sect->dist_h = l2dist(pl.px, pl.py, sect->g, next.y);
 	if (sect->dist_v < sect->dist_h)
 	{
-		sect->mapx = (int)(next.pos_x);
+		sect->mapx = (int)(next.x);
 		if (sect->xstep != 1)
 			sect->mapx -= 1;
 		sect->mapy = (int) sect->f;
@@ -65,7 +65,7 @@ void	get_next_map(t_sector *sect, t_pos next, player_t pl)
 	else
 	{
 		sect->mapx = (int) sect->g;
-		sect->mapy = (int)(next.pos_y);
+		sect->mapy = (int)(next.y);
 		if (sect->ystep != 1)
 			sect->mapy -= 1;
 		sect->hit_side = HORIZ;
@@ -81,8 +81,8 @@ static bool	hit_wall(t_sector sect, t_pos next, dir_t *wdir, t_pos *wpos)
 			*wdir = DIR_W;
 		else
 			*wdir = DIR_E;
-		wpos->pos_x = next.pos_x;
-		wpos->pos_y = sect.f;
+		wpos->x = next.x;
+		wpos->y = sect.f;
 	}
 	else
 	{
@@ -90,8 +90,8 @@ static bool	hit_wall(t_sector sect, t_pos next, dir_t *wdir, t_pos *wpos)
 			*wdir = DIR_S;
 		else
 			*wdir = DIR_N;
-		wpos->pos_x = sect.g;
-		wpos->pos_y = next.pos_y;
+		wpos->x = sect.g;
+		wpos->y = next.y;
 	}
 	printf(" hit wall!\n");
 	return (true);
@@ -119,9 +119,9 @@ bool	get_wall_intersection(double ray, player_t pl, dir_t *wdir, t_pos *wpos)
 			break ;
 		}
 		if (sect.hit_side == VERT)
-			next.pos_x += sect.xstep;
+			next.x += sect.xstep;
 		else
-			next.pos_y += sect.ystep;
+			next.y += sect.ystep;
 	}
 	return (hit);
 }

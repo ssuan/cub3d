@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 14:44:34 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/16 19:50:49 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	g_map[MAPX][MAPY] = {
 
 //chk
 // unsigned char???
-char	map_get_cell( int x, int y )
+char	map_get_cell(int x, int y)
 {
 	if ((x >= 0 && x < MAPX) \
 		&& (y >= 0 && y < MAPY))

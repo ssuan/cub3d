@@ -6,26 +6,11 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:27:37 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 16:13:29 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/16 20:27:38 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-// 나중에 빼기
-/* DIR_N, E, W, S */
-int	g_wall_colors[] = {
-		0x00ccaaaa, 0x00aaccaa, 0x00aaaacc, 0x00bbbbbb
-	};
-
-//mlx
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
-}
 
 /* distance to the floor-FOV intersection point */
 static double	get_fov_min_dist(t_game *game)
@@ -49,7 +34,7 @@ static void	draw_floor_and_ceil(t_game *game, int x, int y1)
 	if (y1 < SY - 1)
 	{
 		ec = get_fov_min_dist(game);
-		y = y1; // y = y1 + 1
+		y = y1;
 		while (y < SY)
 		{
 			h = (double)(SY - 1 - y) / SY;
@@ -70,52 +55,43 @@ static int	get_wall_height(t_game *game, double dist)
 }
 
 //wall
-static void	draw_wall(t_game *game, double wdist, int x, int color)
+// 노션에서 tx, ty 참고
+// 텍스처 부분은 https://stdbc.tistory.com/62 참고
+// game에 wdir, wpos 넣어서 매개변수 줄이기
+static void	draw_wall(t_game *game, int x, dir_t wdir, t_pos *wpos, int wh, int y0, int y1)
 {
-	int	wh;
-	int	y0;
-	int	y1;
-	int	ystart;
-	int	yend;
+	int		y;
+	int		yend;
+	double	txratio;
+	t_pos	tpos;
+	int		color;
 
-	wh = get_wall_height(game, wdist);
-	y0 = (int)((SY - wh) / 2.0);
-	y1 = y0 + wh - 1;
-	ystart = max(0, y0);
+	y = max(0, y0);
 	yend = min(SY - 1, y1);
-	while (ystart < yend)
+	txratio = wpos->x - floor(wpos->x);
+	if (wdir == DIR_W || wdir == DIR_E)
+		txratio = wpos->y - floor(wpos->y);
+	tpos.x = txratio * game->wall[wdir].w;
+	while (y <= yend)
 	{
-		my_mlx_pixel_put(&(game->img), x, ystart, color);
-		ystart++;
+		tpos.y = (double)(y - y0) *game->wall[wdir].h / wh;
+		color = game->wall[wdir].data[game->wall[wdir].size_l \
+			 / (game->wall[wdir].bpp / 8) * (int)tpos.y + (int)tpos.x];
+		my_mlx_pixel_put(&(game->img), x, y, color);
+		y++;
 	}
 	draw_floor_and_ceil(game, x, y1);
 }
 
-//draw
-void	render(t_game *game)
+void	draw(t_game *game, double wdist, int x, dir_t wdir, t_pos *wpos)
 {
-	int		x;
-	int		y;
-	dir_t	wdir;
-	double	wdist;
+	int		wh;
+	int		y0;
+	int		y1;
 
-	x = 0;
-	while (x < SX)
-	{
-		y = 0;
-		while (y < SY)
-		{
-			my_mlx_pixel_put(&game->img, x, y, 0xFFFFFF);
-			y++;
-		}
-		x++;
-	}
-	x = 0;
-	while (x < SX)
-	{
-		wdist = cast_single_ray(x, game, &wdir);
-		draw_wall(game, wdist, x, g_wall_colors[wdir]);
-		x++;
-	}
-	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img.img, 0, 0);
+	wh = get_wall_height(game, wdist);
+	y0 = (int)((SY - wh) / 2.0);
+	y1 = y0 + wh - 1;
+	draw_wall(game, x, wdir, wpos, wh, y0, y1);
+	draw_floor_and_ceil(game, x, y1);
 }
