@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:27:37 by suan              #+#    #+#             */
-/*   Updated: 2022/05/15 15:25:39 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/16 16:13:29 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,40 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
+}
+
+/* distance to the floor-FOV intersection point */
+static double	get_fov_min_dist(t_game *game)
+{
+	static double	T = -1;
+
+	if (T < 0)
+		T = WALL_H / (2.0 * tan(game->fov_v / 2.0));
+	return (T);
+}
+
+#define COLOR_FLOOR 0x00d3c6a6
+#define COLOR_CEIL  0x006df6ea
+static void	draw_floor_and_ceil(t_game *game, int x, int y1)
+{
+	int		y;
+	double	ec;
+	double	h;
+	double	d;
+
+	if (y1 < SY - 1)
+	{
+		ec = get_fov_min_dist(game);
+		y = y1; // y = y1 + 1
+		while (y < SY)
+		{
+			h = (double)(SY - 1 - y) / SY;
+			d = ec / (1. - 2 * h);
+			my_mlx_pixel_put(&(game->img), x, y, COLOR_FLOOR);
+			my_mlx_pixel_put(&(game->img), x, (SY - 1 - y), COLOR_CEIL);
+			y++;
+		}
+	}
 }
 
 static int	get_wall_height(t_game *game, double dist)
@@ -54,34 +88,34 @@ static void	draw_wall(t_game *game, double wdist, int x, int color)
 		my_mlx_pixel_put(&(game->img), x, ystart, color);
 		ystart++;
 	}
+	draw_floor_and_ceil(game, x, y1);
 }
 
 //draw
 void	render(t_game *game)
 {
-	int		loop;
-	int		loop2;
+	int		x;
+	int		y;
 	dir_t	wdir;
 	double	wdist;
 
-	loop = 0;
-	loop2 = 0;
-	while (loop < SX)
+	x = 0;
+	while (x < SX)
 	{
-		while (loop2 < SY)
+		y = 0;
+		while (y < SY)
 		{
-			my_mlx_pixel_put(&game->img, loop, loop2, 0xFFFFFF);
-			loop2++;
+			my_mlx_pixel_put(&game->img, x, y, 0xFFFFFF);
+			y++;
 		}
-		loop2 = 0;
-		loop++;
+		x++;
 	}
-	loop = 0;
-	while (loop < SX)
+	x = 0;
+	while (x < SX)
 	{
-		wdist = cast_single_ray(loop, game, &wdir);
-		draw_wall(game, wdist, loop, g_wall_colors[wdir]);
-		loop++;
+		wdist = cast_single_ray(x, game, &wdir);
+		draw_wall(game, wdist, x, g_wall_colors[wdir]);
+		x++;
 	}
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img.img, 0, 0);
 }
