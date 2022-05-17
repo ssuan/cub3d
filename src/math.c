@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx.c                                              :+:      :+:    :+:   */
+/*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/16 20:27:40 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 17:58:49 by suan             ###   ########.fr       */
+/*   Created: 2022/05/17 17:26:26 by suan              #+#    #+#             */
+/*   Updated: 2022/05/17 18:14:07 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
+int	min(int a, int b)
 {
-	char	*dst;
+	if (a < b)
+		return (a);
+	else
+		return (b);
+}
 
-	dst = img->addr + (y * img->size_l + x * (img->bpp / 8));
-	*(unsigned int *)dst = color;
+int	max(int a, int b)
+{
+	if (a > b)
+		return (a);
+	else
+		return (b);
 }

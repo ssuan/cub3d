@@ -6,138 +6,118 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 20:28:47 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:24:42 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <math.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include "./libft/libft.h"
 # include "mlx.h"
 
-# define ITEM_KEY "10CPE"
+# define ITEM_KEY "10NEWS"
 
 # define X_EVENT_KEY_PRESS 2
 # define X_EVENT_KEY_RELEASE 3
 # define X_EVENT_KEY_EXIT 17
 
+# define DIR_N 0
+# define DIR_E 1
+# define DIR_W 2
+# define DIR_S 3 
+
 # define KEY_W 13
 # define KEY_A 0
 # define KEY_S 1
 # define KEY_D 2
-
 # define KEY_LEFT 123
 # define KEY_RIGHT 124
-# define KEY_DOWN 125
-# define KEY_UP 126
 # define KEY_ESC 53
 
-# define SUCCESS 1
-# define FAILURE 0
+# define SUCCESS 0
+# define FAIL 1
 
-#define TILES 60
-#define COL 15
-#define ROW 15
-#define WIDTH TILES * COL
-#define HEIGHT TILES * ROW
+# define TRUE 1
+# define FALSE 0
 
-#define VERT 0
-#define HORIZ 1
+# define  MAPX   6
+# define  MAPY   5
+# define  SX         300     /* screen width */
+# define  SY         250     /* screen height */
+# define  FOV        60      /* field of view (in degree) */
+# define  WALL_H     1.0
 
-//
-// #define  deg2rad(d)     ((d)*M_PI/180.0)    /* degree to radian */
-// #define  rad2deg(d)     ((d)*180.0/M_PI)    /* radian to degree */ -> 함수
+# define VERT 0
+# define HORIZ 1
 
-#define  min(a,b)       ((a)<(b)? (a):(b))
-#define  max(a,b)       ((a)>(b)? (a):(b))
+# define  _2PI       6.28318530717958647692  /* 2 * M_PI */
 
+# define  ROT_UNIT   0.03    /* rad */
+# define  MOVE_UNIT  0.1
 
-#define  MAPX   6
-#define  MAPY   5
-#define  SX         300     /* screen width */
-#define  SY         250     /* screen height */
-#define  FOV        60      /* field of view (in degree) */
-// #define  FOV_H      deg2rad(FOV)
-// #define  FOV_V      (FOV_H*(double)SY/(double)SX)
-#define  WALL_H     1.0
+typedef struct s_player {
+	double	px;
+	double	py;
+	double	th;
+}	t_player;
 
-#define  _2PI       6.28318530717958647692  /* 2 * M_PI */
-
-#define  ROT_UNIT   0.03    /* rad */
-#define  MOVE_UNIT  0.1
-
-typedef struct {
-	double px;
-	double py;
-	double th;
-} player_t;
-
-typedef struct	s_pos{
-	double x;
-	double y;
-}				t_pos;
-
-// data, img 하나로 
-typedef struct	s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_data;
+typedef struct s_pos {
+	double	x;
+	double	y;
+}	t_pos;
 
 typedef struct s_img {
-    int w, h;
-    void*	img;  /* SDL specific image data */
+	void			*img;
+	char			*addr;
 	unsigned int	*data;
+	int				w;
+	int				h;
 	int				bpp;
 	int				size_l;
 	int				endian;
-} t_img;
+}	t_img;
 
-typedef struct	s_sector{
-	int xstep;
-	int ystep;
-	double xslope;
-	double yslope;
-	double f;
-	double g;
-	int mapx;
-	int mapy;
-	double dist_v;
-	double dist_h;
-	int hit_side; /* either VERT or HORIZ */
-}				t_sector;
+typedef struct s_intersect {
+	int		xstep;
+	int		ystep;
+	double	xslope;
+	double	yslope;
+	double	f;
+	double	g;
+	int		mapx;
+	int		mapy;
+	double	dist_v;
+	double	dist_h;
+	int		hit_side;
+}	t_intersect;
 
-typedef struct s_game
-{
-	void	*mlx;
-	void	*mlx_win;
-	player_t pl;
-	t_data	img;
-	t_img	wall[4];
-	double fov_h;
-	double fov_v;
-	double per_angle; 
-} t_game;
+typedef struct s_map {
+	int		floor_color;
+	int		ceil_color;
+	char	map[1000][1000];
+	int		mapX;
+	int		mapY;
+}	t_map;
 
-// 나중에 빼기
-typedef enum { false=0, true=1 } bool;
-typedef enum { DIR_N=0, DIR_E=1, DIR_W=2, DIR_S=3 } dir_t;
-
-
-// player
-void	player_rotate( player_t* pp, double th );
-int player_move( player_t* pp, int key, double amt );
-
-// ray
-double	cast_single_ray(int x, t_game *game, dir_t *wdir, t_pos *pos);
+typedef struct s_game {
+	void		*mlx;
+	void		*mlx_win;
+	t_img		img;
+	double		fov_h;
+	double		fov_v;
+	double		per_angle;
+	t_map		map;
+	t_img		wall[4];
+	t_player	pl;
+	t_pos		wpos;
+	int			wdir;
+}	t_game;
 
 // check
 char	map_get_cell( int x, int y );
@@ -145,25 +125,36 @@ void	map_check(void);
 int		input_check(int ac, char **av);
 
 // draw
-void	draw(t_game *game, double wdist, int x, dir_t wdir, t_pos *wpos);
+void	draw(t_game *game, double wdist, int x);
+
+// intersection
+int		get_wall_intersection(t_game *game, double ray);
+
+// load
+void	load_texture(t_game *game);
+
+// math
+int		min(int a, int b);
+int		max(int a, int b);
+
+// mlx
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+
+// player
+void	player_rotate(t_player *pl, double th);
+int		player_move(t_player *pl, int key, double amt);
+
+// ray
+double	cast_single_ray(t_game *game, int x);
 
 // render
 void	render(t_game *game);
 
-// mlx
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-
 // util 
-double l2dist( double x0, double y0, double x1, double y1 );
-int is_zero(double d);
-int sgn( double d );
-double deg2rad(double degree);
-double rad2deg(double radian);
-
-// intersection
-bool	get_wall_intersection(double ray, player_t pl, dir_t *wdir, t_pos *wpos);
-
-// load
-void	load_texture(t_game *game);
+double	l2dist( double x0, double y0, double x1, double y1 );
+int		is_zero(double d);
+int		sgn( double d );
+double	deg2rad(double degree);
+double	rad2deg(double radian);
 
 #endif

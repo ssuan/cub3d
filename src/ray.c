@@ -6,23 +6,21 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:32:03 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 20:01:26 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 17:57:41 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-//ray
-// wdir, pos(wpod) -> game으로?
-double	cast_single_ray(int x, t_game *game, dir_t *wdir, t_pos *pos)
+double	cast_single_ray(t_game *game, int x)
 {
 	double	ray;
 	double	wdist;
 
 	ray = (game->pl.th + (game->fov_h / 2.0)) - (x * game->per_angle);
-	if (!(get_wall_intersection(ray, game->pl, wdir, pos)))
+	if (get_wall_intersection(game, ray) == FALSE)
 		return (INFINITY);
-	wdist = l2dist(game->pl.px, game->pl.py, pos->x, pos->y);
+	wdist = l2dist(game->pl.px, game->pl.py, game->wpos.x, game->wpos.y);
 	wdist *= cos(game->pl.th - ray);
 	return (wdist);
 }

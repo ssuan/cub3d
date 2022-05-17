@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:27:37 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 20:27:38 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:18:17 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	get_wall_height(t_game *game, double dist)
 // 노션에서 tx, ty 참고
 // 텍스처 부분은 https://stdbc.tistory.com/62 참고
 // game에 wdir, wpos 넣어서 매개변수 줄이기
-static void	draw_wall(t_game *game, int x, dir_t wdir, t_pos *wpos, int wh, int y0, int y1)
+static void	draw_wall(t_game *game, int wh, int x, int y0)
 {
 	int		y;
 	int		yend;
@@ -67,23 +67,22 @@ static void	draw_wall(t_game *game, int x, dir_t wdir, t_pos *wpos, int wh, int 
 	int		color;
 
 	y = max(0, y0);
-	yend = min(SY - 1, y1);
-	txratio = wpos->x - floor(wpos->x);
-	if (wdir == DIR_W || wdir == DIR_E)
-		txratio = wpos->y - floor(wpos->y);
-	tpos.x = txratio * game->wall[wdir].w;
+	yend = min(SY - 1, y0 + wh - 1);
+	txratio = game->wpos.x - floor(game->wpos.x);
+	if (game->wdir == DIR_W || game->wdir == DIR_E)
+		txratio = game->wpos.y - floor(game->wpos.y);
+	tpos.x = txratio * game->wall[game->wdir].w;
 	while (y <= yend)
 	{
-		tpos.y = (double)(y - y0) *game->wall[wdir].h / wh;
-		color = game->wall[wdir].data[game->wall[wdir].size_l \
-			 / (game->wall[wdir].bpp / 8) * (int)tpos.y + (int)tpos.x];
+		tpos.y = (double)(y - y0) *game->wall[game->wdir].h / wh;
+		color = game->wall[game->wdir].data[game->wall[game->wdir].size_l \
+			 / (game->wall[game->wdir].bpp / 8) * (int)tpos.y + (int)tpos.x];
 		my_mlx_pixel_put(&(game->img), x, y, color);
 		y++;
 	}
-	draw_floor_and_ceil(game, x, y1);
 }
 
-void	draw(t_game *game, double wdist, int x, dir_t wdir, t_pos *wpos)
+void	draw(t_game *game, double wdist, int x)
 {
 	int		wh;
 	int		y0;
@@ -92,6 +91,6 @@ void	draw(t_game *game, double wdist, int x, dir_t wdir, t_pos *wpos)
 	wh = get_wall_height(game, wdist);
 	y0 = (int)((SY - wh) / 2.0);
 	y1 = y0 + wh - 1;
-	draw_wall(game, x, wdir, wpos, wh, y0, y1);
+	draw_wall(game, wh, x, y0);
 	draw_floor_and_ceil(game, x, y1);
 }

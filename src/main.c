@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 19:48:14 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:19:54 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,16 @@ int	key_press(int keycode, t_game *game)
 			render(game);
 	}
 	if (keycode == KEY_ESC)
-	{
-		for (int i = 0; i < 4; i++)
-			mlx_destroy_image(game->mlx, game->wall[i].img);
 		exit(0);
-	}
 	return (0);
 }
 
-int	exit_button(void)
+int	exit_button(t_game *game)
 {
-//	mlx_destroy_image(game->mlx, img->img);
 	exit(0);
 }
 
-int	game_initialize(t_game *game, char **av)
+int	init_game(t_game *game, char **av)
 {
 	game->pl.px = atof(av[1]);
 	game->pl.py = atof(av[2]);
@@ -53,28 +48,28 @@ int	game_initialize(t_game *game, char **av)
 	game->fov_v = (game->fov_h * (double)SY / (double)SX);
 	game->per_angle = game->fov_h / (SX - 1.);
 	if (game->mlx == NULL)
-		return (0);
+		return (FAIL);
 	game->mlx_win = mlx_new_window(game->mlx, SX, SY, "cub3D");
 	if (game->mlx_win == NULL)
-		return (0);
+		return (FAIL);
 	game->img.img = mlx_new_image(game->mlx, SX, SY);
 	if (game->img.img == NULL)
-		return (0);
+		return (FAIL);
 	game->img.addr = mlx_get_data_addr(game->img.img, \
-		&game->img.bits_per_pixel, &game->img.line_length, &game->img.endian);
+		&game->img.bpp, &game->img.size_l, &game->img.endian);
 	if (game->img.addr == NULL)
-		return (0);
-	return (1);
+		return (FAIL);
+	return (SUCCESS);
 }
 
 int	main(int ac, char **av)
 {
 	t_game	game;
 
-	if (input_check(ac, av) == 0)
+	if (input_check(ac, av) == FAIL)
 		exit(1);
 	map_check();
-	if (game_initialize(&game, av) == 0)
+	if (init_game(&game, av) == FAIL)
 		exit(1);
 	load_texture(&game);
 	render(&game);

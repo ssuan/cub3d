@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 19:50:49 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:19:58 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	dx[] = {-1, 1, 0, 0};
 int	dy[] = {0, 0, -1, 1};
 
 // game 구조체에 넣기
-bool	chk[MAPX][MAPY] = {false, };
+int	chk[MAPX][MAPY] = {FALSE, };
 
 void	dfs(int x, int y)
 {
@@ -47,7 +47,7 @@ void	dfs(int x, int y)
 	int		ny;
 	char	cell;
 
-	chk[x][y] = true;
+	chk[x][y] = TRUE;
 	i = 0;
 	while (i < 4)
 	{
@@ -96,7 +96,7 @@ int	input_check(int ac, char **av)
 	if (ac != 4)
 	{
 		fprintf(stderr, "usage: %s x y th(deg)\n", av[0]);
-		return (0);
+		return (FAIL);
 	}
-	return (1);
+	return (SUCCESS);
 }

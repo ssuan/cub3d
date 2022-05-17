@@ -6,20 +6,17 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 20:25:21 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 20:29:18 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:09:00 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-//draw
 void	render(t_game *game)
 {
 	int		x;
 	int		y;
-	dir_t	wdir;
 	double	wdist;
-	t_pos	wpos;
 
 	x = 0;
 	while (x < SX)
@@ -35,8 +32,8 @@ void	render(t_game *game)
 	x = 0;
 	while (x < SX)
 	{
-		wdist = cast_single_ray(x, game, &wdir, &wpos);
-		draw(game, wdist, x, wdir, &wpos);
+		wdist = cast_single_ray(game, x);
+		draw(game, wdist, x);
 		x++;
 	}
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img.img, 0, 0);

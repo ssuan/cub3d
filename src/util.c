@@ -6,13 +6,12 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 13:46:20 by sunbchoi@st       #+#    #+#             */
-/*   Updated: 2022/05/15 15:23:42 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 17:41:05 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-//math? util?
 int	is_zero(double d)
 {
 	double	eps;
@@ -26,7 +25,7 @@ int	is_zero(double d)
 
 int	sgn(double d)
 {
-	if (is_zero(d) == true)
+	if (is_zero(d) == TRUE)
 		return (0);
 	else if (d > 0)
 		return (1);
@@ -34,7 +33,6 @@ int	sgn(double d)
 		return (-1);
 }
 
-//math
 double	l2dist(double x0, double y0, double x1, double y1)
 {
 	double	dx;

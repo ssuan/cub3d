@@ -6,13 +6,13 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 17:01:06 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 20:26:25 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 17:57:16 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	init_sect(t_sector *sect, double ray)
+static void	init_sect(t_intersect *sect, double ray)
 {
 	ft_memset(sect, 0, sizeof(sect));
 	sect->xstep = sgn(cos(ray));
@@ -29,7 +29,7 @@ void	init_sect(t_sector *sect, double ray)
 		sect->yslope = 1. / tan(ray);
 }
 
-void	next_pos_init(player_t pl, t_pos *next, t_sector sect)
+static void	next_pos_init(t_intersect sect, t_player pl, t_pos *next)
 {
 	if (sect.xstep > 0)
 		next->x = floor(pl.px) + 1;
@@ -45,7 +45,7 @@ void	next_pos_init(player_t pl, t_pos *next, t_sector sect)
 		next->y = pl.py;
 }
 
-void	get_next_map(t_sector *sect, t_pos next, player_t pl)
+static void	get_next_map(t_intersect *sect, t_player pl, t_pos next)
 {
 	if (sect->xstep != 0)
 		sect->f = sect->xslope * (next.x - pl.px) + pl.py;
@@ -60,7 +60,6 @@ void	get_next_map(t_sector *sect, t_pos next, player_t pl)
 			sect->mapx -= 1;
 		sect->mapy = (int) sect->f;
 		sect->hit_side = VERT;
-		printf(" V(%d, %.2f) ->", sect->mapx, sect->f);
 	}
 	else
 	{
@@ -69,53 +68,51 @@ void	get_next_map(t_sector *sect, t_pos next, player_t pl)
 		if (sect->ystep != 1)
 			sect->mapy -= 1;
 		sect->hit_side = HORIZ;
-		printf(" H(%.2f, %d) ->", sect->g, sect->mapy);
 	}
 }
 
-static bool	hit_wall(t_sector sect, t_pos next, dir_t *wdir, t_pos *wpos)
+static int	hit_wall(t_intersect sect, t_pos next, t_game *game)
 {
 	if (sect.hit_side == VERT)
 	{
 		if (sect.xstep > 0)
-			*wdir = DIR_W;
+			game->wdir = DIR_W;
 		else
-			*wdir = DIR_E;
-		wpos->x = next.x;
-		wpos->y = sect.f;
+			game->wdir = DIR_E;
+		game->wpos.x = next.x;
+		game->wpos.y = sect.f;
 	}
 	else
 	{
 		if (sect.ystep > 0)
-			*wdir = DIR_S;
+			game->wdir = DIR_S;
 		else
-			*wdir = DIR_N;
-		wpos->x = sect.g;
-		wpos->y = next.y;
+			game->wdir = DIR_N;
+		game->wpos.x = sect.g;
+		game->wpos.y = next.y;
 	}
-	printf(" hit wall!\n");
-	return (true);
+	return (TRUE);
 }
 
-bool	get_wall_intersection(double ray, player_t pl, dir_t *wdir, t_pos *wpos)
+int	get_wall_intersection(t_game *game, double ray)
 {
-	t_sector	sect;
+	t_intersect	sect;
 	t_pos		next;
-	bool		hit;
+	int			hit;
 	char		cell;
 
-	hit = false;
+	hit = FALSE;
 	init_sect(&sect, ray);
-	next_pos_init(pl, &next, sect);
+	next_pos_init(sect, game->pl, &next);
 	while (!hit)
 	{
-		get_next_map(&sect, next, pl);
+		get_next_map(&sect, game->pl, next);
 		cell = map_get_cell(sect.mapx, sect.mapy);
 		if (cell < 0)
 			break ;
 		if (cell == '1')
 		{
-			hit = hit_wall(sect, next, wdir, wpos);
+			hit = hit_wall(sect, next, game);
 			break ;
 		}
 		if (sect.hit_side == VERT)

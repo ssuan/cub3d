@@ -6,7 +6,7 @@
 #    By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 14:46:27 by sunbchoi          #+#    #+#              #
-#    Updated: 2022/05/16 20:29:05 by suan             ###   ########.fr        #
+#    Updated: 2022/05/17 17:30:08 by suan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,15 +14,16 @@ CC = gcc
 CFLAG = #-Wall -Wextra -Werror
 
 SRCS = src/main.c\
+		src/check.c\
+		src/draw.c\
+		src/intersection.c\
+		src/load.c\
+		src/math.c\
+		src/mlx.c\
 		src/player.c\
 		src/ray.c\
-		src/draw.c\
-		src/util.c\
-		src/intersection.c\
-		src/check.c\
-		src/load.c\
 		src/render.c\
-		src/mlx.c\
+		src/util.c\
 
 OBJS = $(SRCS:.c=.o)
 NAME = cub3D

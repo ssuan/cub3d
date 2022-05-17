@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:28:30 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 20:26:10 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:02:35 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	get_move_offset(double th, int key, double amt, t_pos *dpos)
 	return (0);
 }
 
-int	player_move(player_t *pp, int key, double amt)
+int	player_move(t_player *pl, int key, double amt)
 {
 	t_pos	dpos;
 	double	nx;
@@ -43,28 +43,28 @@ int	player_move(player_t *pp, int key, double amt)
 
 	dpos.x = 0;
 	dpos.y = 0;
-	if (get_move_offset(pp->th, key, amt, &dpos) < 0)
+	if (get_move_offset(pl->th, key, amt, &dpos) < 0)
 	{
 		fprintf(stderr, "player_move: invalid key %d\n", key);
 		return (-1);
 	}
-	nx = pp->px + dpos.x;
-	ny = pp->py + dpos.y;
+	nx = pl->px + dpos.x;
+	ny = pl->py + dpos.y;
 	if (map_get_cell((int)nx, (int)ny) != '0')
 	{
 		printf("** bump !\n");
 		return (-1);
 	}
-	pp->px = nx;
-	pp->py = ny;
+	pl->px = nx;
+	pl->py = ny;
 	return (0);
 }
 
-void	player_rotate(player_t *pp, double th)
+void	player_rotate(t_player *pl, double th)
 {
-	pp->th += th;
-	if (pp->th < 0)
-		pp->th += _2PI;
-	else if (pp->th > _2PI)
-		pp->th -= _2PI;
+	pl->th += th;
+	if (pl->th < 0)
+		pl->th += _2PI;
+	else if (pl->th > _2PI)
+		pl->th -= _2PI;
 }
