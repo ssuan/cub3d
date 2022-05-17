@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:28:30 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:02:35 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:33:43 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	get_move_offset(double th, int key, double amt, t_pos *dpos)
 	return (0);
 }
 
-int	player_move(t_player *pl, int key, double amt)
+int	player_move(t_game *game, int key, double amt)
 {
 	t_pos	dpos;
 	double	nx;
@@ -43,20 +43,20 @@ int	player_move(t_player *pl, int key, double amt)
 
 	dpos.x = 0;
 	dpos.y = 0;
-	if (get_move_offset(pl->th, key, amt, &dpos) < 0)
+	if (get_move_offset(game->pl.th, key, amt, &dpos) < 0)
 	{
 		fprintf(stderr, "player_move: invalid key %d\n", key);
 		return (-1);
 	}
-	nx = pl->px + dpos.x;
-	ny = pl->py + dpos.y;
-	if (map_get_cell((int)nx, (int)ny) != '0')
+	nx = game->pl.px + dpos.x;
+	ny = game->pl.py + dpos.y;
+	if (map_get_cell(game, (int)nx, (int)ny) != '0')
 	{
 		printf("** bump !\n");
 		return (-1);
 	}
-	pl->px = nx;
-	pl->py = ny;
+	game->pl.px = nx;
+	game->pl.py = ny;
 	return (0);
 }
 

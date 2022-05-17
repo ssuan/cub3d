@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 17:01:06 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 17:57:16 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:32:32 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	get_wall_intersection(t_game *game, double ray)
 	while (!hit)
 	{
 		get_next_map(&sect, game->pl, next);
-		cell = map_get_cell(sect.mapx, sect.mapy);
+		cell = map_get_cell(game, sect.mapx, sect.mapy);
 		if (cell < 0)
 			break ;
 		if (cell == '1')

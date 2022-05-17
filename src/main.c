@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:19:54 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:35:45 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	key_press(int keycode, t_game *game)
 	else if (keycode == KEY_W || keycode == KEY_A \
 		|| keycode == KEY_S || keycode == KEY_D)
 	{
-		if (player_move(&game->pl, keycode, MOVE_UNIT) == 0)
+		if (player_move(game, keycode, MOVE_UNIT) == 0)
 			render(game);
 	}
 	if (keycode == KEY_ESC)
@@ -68,7 +68,7 @@ int	main(int ac, char **av)
 
 	if (input_check(ac, av) == FAIL)
 		exit(1);
-	map_check();
+	map_check(&game);
 	if (init_game(&game, av) == FAIL)
 		exit(1);
 	load_texture(&game);

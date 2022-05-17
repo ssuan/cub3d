@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:24:42 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:33:57 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ typedef struct s_game {
 }	t_game;
 
 // check
-char	map_get_cell( int x, int y );
-void	map_check(void);
+char	map_get_cell(t_game *game, int x, int y);
+void	map_check(t_game *game);
 int		input_check(int ac, char **av);
 
 // draw
@@ -142,7 +142,7 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 
 // player
 void	player_rotate(t_player *pl, double th);
-int		player_move(t_player *pl, int key, double amt);
+int		player_move(t_game *game, int key, double amt);
 
 // ray
 double	cast_single_ray(t_game *game, int x);
@@ -151,7 +151,7 @@ double	cast_single_ray(t_game *game, int x);
 void	render(t_game *game);
 
 // util 
-double	l2dist( double x0, double y0, double x1, double y1 );
+double	l2dist(double x0, double y0, double x1, double y1);
 int		is_zero(double d);
 int		sgn( double d );
 double	deg2rad(double degree);

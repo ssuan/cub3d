@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:19:58 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:31:47 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ static char	g_map[MAPX][MAPY] = {
 	{'1', '1', ' ', '1', '1'}
 };
 
-//chk
 // unsigned char???
-char	map_get_cell(int x, int y)
+char	map_get_cell(t_game *game, int x, int y)
 {
 	if ((x >= 0 && x < MAPX) \
 		&& (y >= 0 && y < MAPY))
@@ -40,7 +39,7 @@ int	dy[] = {0, 0, -1, 1};
 // game 구조체에 넣기
 int	chk[MAPX][MAPY] = {FALSE, };
 
-void	dfs(int x, int y)
+static void	dfs(t_game *game, int x, int y)
 {
 	int		i;
 	int		nx;
@@ -53,7 +52,7 @@ void	dfs(int x, int y)
 	{
 		nx = x + dx[i];
 		ny = y + dy[i];
-		cell = map_get_cell(nx, ny);
+		cell = map_get_cell(game, nx, ny);
 		if (cell == -1)
 		{
 			fprintf(stderr, "not closed\n");
@@ -65,12 +64,12 @@ void	dfs(int x, int y)
 			exit(1);
 		}
 		else if (cell == '0' && !chk[nx][ny])
-			dfs(nx, ny);
+			dfs(game, nx, ny);
 		i++;
 	}
 }
 
-void	map_check(void)
+void	map_check(t_game *game)
 {
 	int	x;
 	int	y;
@@ -83,7 +82,7 @@ void	map_check(void)
 		{
 			if (g_map[x][y] == '0' && !chk[x][y])
 			{
-				dfs(x, y);
+				dfs(game, x, y);
 			}
 			y++;
 		}
