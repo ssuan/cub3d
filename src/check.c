@@ -6,28 +6,18 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:31:47 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:43:06 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-// 빼기
-static char	g_map[MAPX][MAPY] = {
-	{'1', '1', '1', '1', '1'},
-	{'1', '0', '0', '0', '1'},
-	{'1', '0', '0', '0', '1'},
-	{'1', '0', '0', '0', '1'},
-	{'1', '0', '1', '1', '1'},
-	{'1', '1', ' ', '1', '1'}
-};
-
 // unsigned char???
 char	map_get_cell(t_game *game, int x, int y)
 {
-	if ((x >= 0 && x < MAPX) \
-		&& (y >= 0 && y < MAPY))
-		return (g_map[x][y]);
+	if ((x >= 0 && x < game->map.mapX) \
+		&& (y >= 0 && y < game->map.mapY))
+		return (game->map.map[x][y]);
 	else
 		return (-1);
 }
@@ -75,12 +65,12 @@ void	map_check(t_game *game)
 	int	y;
 
 	x = 0;
-	while (x < MAPX)
+	while (x < game->map.mapX)
 	{
 		y = 0;
-		while (y < MAPY)
+		while (y < game->map.mapY)
 		{
-			if (g_map[x][y] == '0' && !chk[x][y])
+			if (game->map.map[x][y] == '0' && !chk[x][y])
 			{
 				dfs(game, x, y);
 			}

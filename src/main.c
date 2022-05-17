@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:35:45 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 18:41:12 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,29 @@ int	exit_button(t_game *game)
 	exit(0);
 }
 
+/* 제거 */
+static char	g_map[MAPX][MAPY] = {
+	{'1', '1', '1', '1', '1'},
+	{'1', '0', '0', '0', '1'},
+	{'1', '0', '0', '0', '1'},
+	{'1', '0', '0', '0', '1'},
+	{'1', '0', '1', '1', '1'},
+	{'1', '1', ' ', '1', '1'}
+};
+/* 여기까지 */
+
 int	init_game(t_game *game, char **av)
 {
 	game->pl.px = atof(av[1]);
 	game->pl.py = atof(av[2]);
 	game->pl.th = deg2rad(atof(av[3]));
+	/* 제거 */
+	game->map.mapX = MAPX;
+	game->map.mapY = MAPY;
+	for (int x = 0; x < MAPX; x++)
+		for (int y = 0; y < MAPY; y++)
+			game->map.map[x][y] = g_map[x][y];
+	/* 여기까지 */
 	game->mlx = mlx_init();
 	game->fov_h = deg2rad(FOV);
 	game->fov_v = (game->fov_h * (double)SY / (double)SX);
