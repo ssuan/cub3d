@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 17:01:06 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 20:26:25 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 16:58:47 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	get_next_map(t_sector *sect, t_pos next, player_t pl)
 			sect->mapx -= 1;
 		sect->mapy = (int) sect->f;
 		sect->hit_side = VERT;
-		printf(" V(%d, %.2f) ->", sect->mapx, sect->f);
+//		printf(" V(%d, %.2f) ->", sect->mapx, sect->f);
 	}
 	else
 	{
@@ -69,7 +69,7 @@ void	get_next_map(t_sector *sect, t_pos next, player_t pl)
 		if (sect->ystep != 1)
 			sect->mapy -= 1;
 		sect->hit_side = HORIZ;
-		printf(" H(%.2f, %d) ->", sect->g, sect->mapy);
+//		printf(" H(%.2f, %d) ->", sect->g, sect->mapy);
 	}
 }
 
@@ -93,24 +93,26 @@ static bool	hit_wall(t_sector sect, t_pos next, dir_t *wdir, t_pos *wpos)
 		wpos->x = sect.g;
 		wpos->y = next.y;
 	}
-	printf(" hit wall!\n");
+//	printf(" hit wall!\n");
 	return (true);
 }
 
-bool	get_wall_intersection(double ray, player_t pl, dir_t *wdir, t_pos *wpos)
+bool	get_wall_intersection(double ray, t_game *game, dir_t *wdir, t_pos *wpos)
 {
 	t_sector	sect;
 	t_pos		next;
 	bool		hit;
 	char		cell;
+	player_t pl;
 
+	pl = game->pl;
 	hit = false;
 	init_sect(&sect, ray);
 	next_pos_init(pl, &next, sect);
 	while (!hit)
 	{
 		get_next_map(&sect, next, pl);
-		cell = map_get_cell(sect.mapx, sect.mapy);
+		cell = map_get_cell(game, sect.mapx, sect.mapy);
 		if (cell < 0)
 			break ;
 		if (cell == '1')

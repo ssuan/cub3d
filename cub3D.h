@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 20:28:47 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 16:55:58 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@
 
 #define  MAPX   6
 #define  MAPY   5
-#define  SX         300     /* screen width */
-#define  SY         250     /* screen height */
+#define  SX         800     /* screen width */
+#define  SY         600     /* screen height */
 #define  FOV        60      /* field of view (in degree) */
 // #define  FOV_H      deg2rad(FOV)
 // #define  FOV_V      (FOV_H*(double)SY/(double)SX)
@@ -115,12 +115,25 @@ typedef struct	s_sector{
 	int hit_side; /* either VERT or HORIZ */
 }				t_sector;
 
+
+typedef struct	s_map 
+{
+	int floor_color;
+	int ceil_color;
+	char map[1000][1000];
+	int max_lenX;
+	int max_lenY;
+}	t_map;
+
+//wall 배열 [NO SO WE EA] 북 남 서 동
+
 typedef struct s_game
 {
 	void	*mlx;
 	void	*mlx_win;
 	player_t pl;
 	t_data	img;
+	t_map	map;
 	t_img	wall[4];
 	double fov_h;
 	double fov_v;
@@ -134,14 +147,14 @@ typedef enum { DIR_N=0, DIR_E=1, DIR_W=2, DIR_S=3 } dir_t;
 
 // player
 void	player_rotate( player_t* pp, double th );
-int player_move( player_t* pp, int key, double amt );
+int player_move( t_game* game, int key, double amt );
 
 // ray
 double	cast_single_ray(int x, t_game *game, dir_t *wdir, t_pos *pos);
 
 // check
-char	map_get_cell( int x, int y );
-void	map_check(void);
+char	map_get_cell(t_game *game, int x, int y );
+void	map_check(t_game *game);
 int		input_check(int ac, char **av);
 
 // draw
@@ -160,10 +173,17 @@ int sgn( double d );
 double deg2rad(double degree);
 double rad2deg(double radian);
 
+//read
+void	read_cub(char *cub, t_game *game);
+int	read_img(int fd, t_game *game);
+int	read_map(int fd, t_game *game);
+int	read_rgb(int fd, t_game *game);
+
 // intersection
-bool	get_wall_intersection(double ray, player_t pl, dir_t *wdir, t_pos *wpos);
+bool	get_wall_intersection(double ray, t_game *game, dir_t *wdir, t_pos *wpos);
 
 // load
 void	load_texture(t_game *game);
+void	load_image(t_game *game, t_img *img, char *path);
 
 #endif

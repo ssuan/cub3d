@@ -1,28 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray.c                                              :+:      :+:    :+:   */
+/*   read_cub.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/15 14:32:03 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 16:56:16 by sunbchoi@st      ###   ########.fr       */
+/*   Created: 2022/05/16 13:51:41 by sunbchoi@st       #+#    #+#             */
+/*   Updated: 2022/05/17 16:07:56 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-//ray
-// wdir, pos(wpod) -> game으로?
-double	cast_single_ray(int x, t_game *game, dir_t *wdir, t_pos *pos)
+int		empty_line_check(int fd)
 {
-	double	ray;
-	double	wdist;
+	int loop;
+	char *line_empty;
 
-	ray = (game->pl.th + (game->fov_h / 2.0)) - (x * game->per_angle);
-	if (!(get_wall_intersection(ray, game, wdir, pos)))
-		return (INFINITY);
-	wdist = l2dist(game->pl.px, game->pl.py, pos->x, pos->y);
-	wdist *= cos(game->pl.th - ray);
-	return (wdist);
+	ft_gnl(fd, &line_empty);	
+	free(line_empty);
+	return (0);
+}
+
+void	read_cub(char *cub, t_game *game)
+{
+	int		fd;
+	int		y_len;
+
+	fd = open(cub, O_RDONLY);
+	if (fd == -1)
+		perror("Map not found");
+	read_img(fd, game);
+	empty_line_check(fd);
+	read_rgb(fd, game);
+	empty_line_check(fd);
+	read_map(fd, game);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 19:48:14 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 16:51:47 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	key_press(int keycode, t_game *game)
 	else if (keycode == KEY_W || keycode == KEY_A \
 		|| keycode == KEY_S || keycode == KEY_D)
 	{
-		if (player_move(&game->pl, keycode, MOVE_UNIT) == 0)
+		if (player_move(game, keycode, MOVE_UNIT) == 0)
 			render(game);
 	}
 	if (keycode == KEY_ESC)
@@ -34,6 +34,7 @@ int	key_press(int keycode, t_game *game)
 			mlx_destroy_image(game->mlx, game->wall[i].img);
 		exit(0);
 	}
+	printf("Player[%f][%f][%f]\n",game->pl.px,game->pl.py,game->pl.th);
 	return (0);
 }
 
@@ -45,9 +46,13 @@ int	exit_button(void)
 
 int	game_initialize(t_game *game, char **av)
 {
-	game->pl.px = atof(av[1]);
-	game->pl.py = atof(av[2]);
-	game->pl.th = deg2rad(atof(av[3]));
+	// game->pl.px = atof(av[1]);
+	// game->pl.py = atof(av[2]);
+	// game->pl.th = deg2rad(atof(av[3]));
+	game->pl.px = 1.5;
+	game->pl.py = 1.5;
+	game->pl.th = deg2rad(0);
+		
 	game->mlx = mlx_init();
 	game->fov_h = deg2rad(FOV);
 	game->fov_v = (game->fov_h * (double)SY / (double)SX);
@@ -73,10 +78,11 @@ int	main(int ac, char **av)
 
 	if (input_check(ac, av) == 0)
 		exit(1);
-	map_check();
 	if (game_initialize(&game, av) == 0)
 		exit(1);
-	load_texture(&game);
+	read_cub(av[1], &game);
+	map_check(&game);
+	//load_texture(&game);
 	render(&game);
 	mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
 	mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);

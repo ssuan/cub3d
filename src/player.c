@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:28:30 by suan              #+#    #+#             */
-/*   Updated: 2022/05/16 20:26:10 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/17 16:54:14 by sunbchoi@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,14 @@ static int	get_move_offset(double th, int key, double amt, t_pos *dpos)
 	return (0);
 }
 
-int	player_move(player_t *pp, int key, double amt)
+int	player_move(t_game *game, int key, double amt)
 {
 	t_pos	dpos;
 	double	nx;
 	double	ny;
+	player_t* pp;
+
+	pp = &(game->pl);
 
 	dpos.x = 0;
 	dpos.y = 0;
@@ -50,7 +53,7 @@ int	player_move(player_t *pp, int key, double amt)
 	}
 	nx = pp->px + dpos.x;
 	ny = pp->py + dpos.y;
-	if (map_get_cell((int)nx, (int)ny) != '0')
+	if (map_get_cell(game, (int)nx, (int)ny) != '0')
 	{
 		printf("** bump !\n");
 		return (-1);

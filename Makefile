@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+         #
+#    By: sunbchoi@student.42seoul.kr <sunbchoi>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 14:46:27 by sunbchoi          #+#    #+#              #
-#    Updated: 2022/05/16 20:29:05 by suan             ###   ########.fr        #
+#    Updated: 2022/05/17 16:00:14 by sunbchoi@st      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,10 @@ SRCS = src/main.c\
 		src/load.c\
 		src/render.c\
 		src/mlx.c\
+		src/read_cub.c\
+		src/read_img.c\
+		src/read_rgb.c\
+		src/read_map.c\
 
 OBJS = $(SRCS:.c=.o)
 NAME = cub3D
