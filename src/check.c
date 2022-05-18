@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:43:06 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/18 22:27:16 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,27 @@ void	map_check(t_game *game)
 
 int	input_check(int ac, char **av)
 {
-	if (ac != 4)
+	// if (ac != 4)
+	// {
+	// 	fprintf(stderr, "usage: %s x y th(deg)\n", av[0]);
+	// 	return (FAIL);
+	// }
+
+	char	*map_ext;
+
+	if (ac < 2 || ft_strlen(av[1]) == 0)
 	{
-		fprintf(stderr, "usage: %s x y th(deg)\n", av[0]);
-		return (FAIL);
+		perror("Please enter the name of the map file you want to use.\n\
+			Ex: ./maps/map.cub");
 	}
+	else if (ac > 2)
+	{
+		perror("Too many argument entered. Please retry it again.\n\
+			Ex: ./maps/map.cub");
+	}
+	map_ext = ft_strrchr(av[1], '.');
+	if ((ft_strstr(map_ext, ".cub") == NULL) \
+		|| (ft_strlen(map_ext) != ft_strlen(".cub")))
+		perror("Invalid map extension. Please Enter *.cub");
 	return (SUCCESS);
 }

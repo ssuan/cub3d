@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:41:12 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/18 22:29:39 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,13 @@ static char	g_map[MAPX][MAPY] = {
 
 int	init_game(t_game *game, char **av)
 {
-	game->pl.px = atof(av[1]);
-	game->pl.py = atof(av[2]);
-	game->pl.th = deg2rad(atof(av[3]));
+	// game->pl.px = atof(av[1]);
+	// game->pl.py = atof(av[2]);
+	// game->pl.th = deg2rad(atof(av[3]));
+	game->pl.px = 1.5;
+	game->pl.py = 3.5;
+	game->pl.th = 0;
+	
 	/* 제거 */
 	game->map.mapX = MAPX;
 	game->map.mapY = MAPY;
@@ -77,6 +81,9 @@ int	init_game(t_game *game, char **av)
 		&game->img.bpp, &game->img.size_l, &game->img.endian);
 	if (game->img.addr == NULL)
 		return (FAIL);
+	game->map.ceil_color = -1;
+    game->map.floor_color = -1;
+	
 	return (SUCCESS);
 }
 
@@ -85,15 +92,24 @@ int	main(int ac, char **av)
 	t_game	game;
 
 	if (input_check(ac, av) == FAIL)
+	{
+		printf("CASE1\n");
 		exit(1);
+	}
 	map_check(&game);
+	printf("CASE2\n");
+	
 	if (init_game(&game, av) == FAIL)
 		exit(1);
-	load_texture(&game);
-	render(&game);
-	mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
-	mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);
-	mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, &game);
-	mlx_loop(game.mlx);
+	printf("CASE3\n");
+	read_cub(av[1], &game);
+	printf("CASE4\n");
+
+	// load_texture(&game);
+	// render(&game);
+	// mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
+	// mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);
+	// mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, &game);
+	// mlx_loop(game.mlx);
 	return (0);
 }
