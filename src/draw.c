@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:27:37 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:18:17 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/18 22:37:43 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ static double	get_fov_min_dist(t_game *game)
 	return (T);
 }
 
-#define COLOR_FLOOR 0x00d3c6a6
-#define COLOR_CEIL  0x006df6ea
 static void	draw_floor_and_ceil(t_game *game, int x, int y1)
 {
 	int		y;
@@ -39,8 +37,8 @@ static void	draw_floor_and_ceil(t_game *game, int x, int y1)
 		{
 			h = (double)(SY - 1 - y) / SY;
 			d = ec / (1. - 2 * h);
-			my_mlx_pixel_put(&(game->img), x, y, COLOR_FLOOR);
-			my_mlx_pixel_put(&(game->img), x, (SY - 1 - y), COLOR_CEIL);
+			my_mlx_pixel_put(&(game->img), x, y, game->map.floor_color);
+			my_mlx_pixel_put(&(game->img), x, (SY - 1 - y), game->map.ceil_color);
 			y++;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/18 22:29:39 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/18 22:59:52 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,17 @@ int	key_press(int keycode, t_game *game)
 			render(game);
 	}
 	if (keycode == KEY_ESC)
+	{
+		system("leaks cub3D");
 		exit(0);
+	}
 	return (0);
 }
 
 int	exit_button(t_game *game)
 {
+
+		system("leaks cub3D");
 	exit(0);
 }
 
@@ -105,11 +110,13 @@ int	main(int ac, char **av)
 	read_cub(av[1], &game);
 	printf("CASE4\n");
 
-	// load_texture(&game);
-	// render(&game);
-	// mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
-	// mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);
-	// mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, &game);
-	// mlx_loop(game.mlx);
+	load_texture(&game);
+	render(&game);
+	mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
+	mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);
+	mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, &game);
+	mlx_loop(game.mlx);
+
+	system("leaks cub3D");
 	return (0);
 }

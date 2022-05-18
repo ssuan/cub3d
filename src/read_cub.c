@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 13:51:41 by sunbchoi          #+#    #+#             */
-/*   Updated: 2022/05/18 21:58:29 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/18 23:05:32 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ char	*not_empty_line_load(int fd)
 {
 	char	*line;
 	int		empty_check;
-	
-	empty_check = 0;;
+
+	empty_check = 0;
 	while (ft_gnl(fd, &line))
 	{
 		if (empty_line_check(line) == 1)
