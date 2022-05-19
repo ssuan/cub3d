@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/18 22:59:52 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/18 23:14:48 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ static char	g_map[MAPX][MAPY] = {
 
 int	init_game(t_game *game, char **av)
 {
-	// game->pl.px = atof(av[1]);
-	// game->pl.py = atof(av[2]);
-	// game->pl.th = deg2rad(atof(av[3]));
-	game->pl.px = 1.5;
-	game->pl.py = 3.5;
-	game->pl.th = 0;
+	game->pl.px = -1.0;
+	game->pl.py = -1.0;
+//	game->pl.th = deg2rad(atof(av[3]));
+	// game->pl.px = 1.5;
+	// game->pl.py = 3.5;
+	// game->pl.th = 0;
 	
 	/* 제거 */
 	game->map.mapX = MAPX;
