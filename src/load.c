@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 20:22:07 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 19:18:23 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/19 20:05:16 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,4 @@ void	load_image(t_game *game, t_img *img, char *path)
 	}
 	img->data = (unsigned int *)mlx_get_data_addr(img->img, &img->bpp, \
 			&img->size_l, &img->endian);
-}
-
-void	load_texture(t_game *game)
-{
-	load_image(game, &game->wall[0], "texture/wall_n.xpm");
-	load_image(game, &game->wall[1], "texture/wall_e.xpm");
-	load_image(game, &game->wall[2], "texture/wall_w.xpm");
-	load_image(game, &game->wall[3], "texture/wall_s.xpm");
 }
