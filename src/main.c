@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/18 23:14:48 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/19 14:40:09 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ int	init_game(t_game *game, char **av)
 	for (int x = 0; x < MAPX; x++)
 		for (int y = 0; y < MAPY; y++)
 			game->map.map[x][y] = g_map[x][y];
+	int loop;
+	loop = 0;
+	while (loop < 1000)
+		ft_memset(game->map.map[loop++], 0, sizeof(char) * 1000);
 	/* 여기까지 */
 	game->mlx = mlx_init();
 	game->fov_h = deg2rad(FOV);

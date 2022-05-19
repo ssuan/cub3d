@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 20:39:36 by sunbchoi          #+#    #+#             */
-/*   Updated: 2022/05/19 13:44:52 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/19 14:37:23 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,43 @@ void	check_player(char *line, t_game *game, int y)
 	}
 }
 
+void	map_reverse(t_game *game)
+{
+	int temp;
+	double dtemp;
+	int lpy;
+	int lpx;
+	char save_map[1000][1000];
+
+	lpy = 0;
+	while (lpy < 1000)
+	{
+		ft_memcpy(save_map[lpy], game->map.map[lpy] , sizeof(char) * 1000);
+		lpy++;
+	}
+	lpy = 0;
+	while (lpy < 1000)
+		ft_memset(game->map.map[lpy++], 0, sizeof(char) * 1000);
+	lpy = 0;
+	while (lpy < 1000)
+	{
+		lpx = 0;
+		while (lpx < 1000)
+		{
+			game->map.map[lpx][lpy] = save_map[lpy][lpx];
+			lpx++;
+		}
+		lpy++;
+	}
+	temp = game->map.mapY;
+	game->map.mapY = game->map.mapX;
+	game->map.mapX = temp;
+
+	dtemp = game->pl.py;
+	game->pl.py = game->pl.px;
+	game->pl.px = dtemp;
+}
+
 void	save_line_map(char *line, t_game *game, int y)
 {
 	if (y > 1000)
@@ -93,8 +130,27 @@ int	read_map(int fd, t_game *game)
 		loop_y++;
 	}
 	save_line_map(line, game, loop_y);
-	loop_y++;
 	printf("[%s]\n", game->map.map[loop_y]);
+	loop_y++;
 	game->map.mapY = loop_y;
+	
+	
+	int loop_x;
+	loop_x = 0;
+	map_reverse(game);
+	printf("\n\nREV\n\n", game->map.map[loop_y]);
+	while (loop_x < 1000)
+	{
+		loop_y = 0;
+		while (loop_y < 1000)
+		{
+			if (game->map.map[loop_x][loop_y] != 0)
+				printf("[%c]", game->map.map[loop_x][loop_y]);
+			loop_y++;
+		}
+		loop_x++;
+		printf("\n");
+	}
+	
 	return (1);
 }
