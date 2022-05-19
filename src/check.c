@@ -6,67 +6,67 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:31:47 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 17:45:21 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
 // 빼기
-static char	g_map[MAPX][MAPY] = {
+static char	g_map[MAPY][MAPX] = {
 	{'1', '1', '1', '1', '1'},
+	{'1', '0', '1', '0', '1'},
+	{'1', '0', '1', '0', '1'},
 	{'1', '0', '0', '0', '1'},
-	{'1', '0', '0', '0', '1'},
-	{'1', '0', '0', '0', '1'},
-	{'1', '0', '1', '1', '1'},
-	{'1', '1', ' ', '1', '1'}
+	{'1', '0', '0', '1', '1'},
+	{'1', '1', '1', '1', '1'}
 };
+
+/*
+e: blue 180
+n: red 270
+s: grey 90
+w: wood 0
+*/
 
 // unsigned char???
 char	map_get_cell(t_game *game, int x, int y)
 {
 	if ((x >= 0 && x < MAPX) \
 		&& (y >= 0 && y < MAPY))
-		return (g_map[x][y]);
+		return (g_map[y][x]);
 	else
 		return (-1);
 }
 
-// 정리 -> 구조체?
-int	dx[] = {-1, 1, 0, 0};
-int	dy[] = {0, 0, -1, 1};
-
 // game 구조체에 넣기
-int	chk[MAPX][MAPY] = {FALSE, };
+int	chk[MAPY][MAPX] = {FALSE, };
 
-static void	dfs(t_game *game, int x, int y)
+static void dfs(t_game *game, int x, int y)
 {
-	int		i;
-	int		nx;
-	int		ny;
-	char	cell;
+    char    cell;
 
-	chk[x][y] = TRUE;
-	i = 0;
-	while (i < 4)
-	{
-		nx = x + dx[i];
-		ny = y + dy[i];
-		cell = map_get_cell(game, nx, ny);
-		if (cell == -1)
-		{
-			fprintf(stderr, "not closed\n");
-			exit(1);
-		}
-		else if (cell != '0' && cell != '1')
-		{
-			fprintf(stderr, "invalid char\n");
-			exit(1);
-		}
-		else if (cell == '0' && !chk[nx][ny])
-			dfs(game, nx, ny);
-		i++;
-	}
+    if (chk[y][x])
+        return ;
+    chk[y][x] = TRUE;
+    cell = map_get_cell(game, x, y);
+    if (cell == -1)
+    {
+        fprintf(stderr, "not closed\n");
+        exit(1);
+    }
+    else if (cell != '0' && cell != '1')
+    {
+        fprintf(stderr, "invalid char\n");
+        exit(1);
+    }
+    else if (cell == '0')
+    {
+        dfs(game, x + 1, y);
+        dfs(game, x - 1, y);
+        dfs(game, x, y + 1);
+        dfs(game, x, y - 1);
+    }
 }
 
 void	map_check(t_game *game)
@@ -80,13 +80,26 @@ void	map_check(t_game *game)
 		y = 0;
 		while (y < MAPY)
 		{
-			if (g_map[x][y] == '0' && !chk[x][y])
+			if (g_map[y][x] == '0' && !chk[y][x])
 			{
 				dfs(game, x, y);
 			}
 			y++;
 		}
 		x++;
+	}
+
+	y = 0;
+	while (y < MAPY)
+	{
+		x = 0;
+		while (x < MAPX)
+		{
+			printf("%c", g_map[y][x]);
+			x++;
+		}
+		y++;
+		printf("\n");
 	}
 }
 

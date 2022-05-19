@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 20:25:21 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:09:00 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 18:13:40 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	render(t_game *game)
 	while (x < SX)
 	{
 		wdist = cast_single_ray(game, x);
-		draw(game, wdist, x);
+		draw(game, wdist, SX - 1 - x);
 		x++;
 	}
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img.img, 0, 0);

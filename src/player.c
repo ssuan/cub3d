@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:28:30 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:33:43 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 18:15:35 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	get_move_offset(double th, int key, double amt, t_pos *dpos)
 {
 	int	sgn;
 
-	if (key == KEY_W || key == KEY_A)
+	if (key == KEY_W || key == KEY_D)
 		sgn = 1;
 	else
 		sgn = -1;

@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:33:57 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 16:10:20 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@
 # define TRUE 1
 # define FALSE 0
 
-# define  MAPX   6
-# define  MAPY   5
+# define  MAPX   5
+# define  MAPY   6
 # define  SX         300     /* screen width */
 # define  SY         250     /* screen height */
 # define  FOV        60      /* field of view (in degree) */
