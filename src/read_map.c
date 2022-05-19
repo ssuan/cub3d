@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 20:39:36 by sunbchoi          #+#    #+#             */
-/*   Updated: 2022/05/19 19:15:43 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/19 19:45:00 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,26 @@ void	set_player(char *line, int x, int y, t_game *game)
 	game->pl.py = (float)y + 0.5;
 	if (line[x] == 'N')
 	{
-		//1
 		game->wdir = 0;
 		game->pl.th = deg2rad(3 * 90);
 	}
 	else if (line[x] == 'E')
 	{
-		//2
 		game->pl.th = deg2rad(0 * 90);
 		game->wdir = 1;
 	}
 	else if (line[x] == 'W')
 	{
-		//0
 		game->pl.th = deg2rad(2 * 90);
 		game->wdir = 2;
 	}
 	else if (line[x] == 'S')
 	{
-		//3
 		game->pl.th = deg2rad(1 * 90);
 		game->wdir = 3;
 	}
 	line[x] = '0';
-} 
+}
 
 void	check_player(char *line, t_game *game, int y)
 {

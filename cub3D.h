@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 19:18:12 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/19 19:54:25 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,9 @@ typedef struct s_game {
 	t_pos		wpos;
 	int			wdir;
 }	t_game;
+
+// init
+int	init_game(t_game *game);
 
 // check
 char	map_get_cell(t_game *game, int x, int y);

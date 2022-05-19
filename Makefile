@@ -6,7 +6,7 @@
 #    By: sunbchoi <sunbchoi>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 14:46:27 by sunbchoi          #+#    #+#              #
-#    Updated: 2022/05/19 19:18:43 by sunbchoi         ###   ########.fr        #
+#    Updated: 2022/05/19 19:55:02 by sunbchoi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ CC = gcc
 CFLAG = #-Wall -Wextra -Werror
 
 SRCS = src/main.c\
+		src/init.c\
 		src/check.c\
 		src/draw.c\
 		src/intersection.c\

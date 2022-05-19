@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:27:37 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 19:12:45 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 19:43:52 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,13 @@
 /* distance to the floor-FOV intersection point */
 static double	get_fov_min_dist(t_game *game)
 {
-	static double	T = -1;
+	static double	t = -1;
 
-	if (T < 0)
-		T = WALL_H / (2.0 * tan(game->fov_v / 2.0));
-	return (T);
+	if (t < 0)
+		t = WALL_H / (2.0 * tan(game->fov_v / 2.0));
+	return (t);
 }
 
-#define COLOR_FLOOR 0x00d3c6a6
-#define COLOR_CEIL  0x006df6ea
 static void	draw_floor_and_ceil(t_game *game, int x, int y1)
 {
 	int		y;
@@ -39,8 +37,9 @@ static void	draw_floor_and_ceil(t_game *game, int x, int y1)
 		{
 			h = (double)(SY - 1 - y) / SY;
 			d = ec / (1. - 2 * h);
-			my_mlx_pixel_put(&(game->img), x, y, COLOR_FLOOR);
-			my_mlx_pixel_put(&(game->img), x, (SY - 1 - y), COLOR_CEIL);
+			my_mlx_pixel_put(&(game->img), x, y, game->map.floor_color);
+			my_mlx_pixel_put(&(game->img), x, (SY - 1 - y), \
+				game->map.ceil_color);
 			y++;
 		}
 	}
@@ -54,10 +53,6 @@ static int	get_wall_height(t_game *game, double dist)
 	return ((int)(SY * (WALL_H / fov_h)));
 }
 
-//wall
-// 노션에서 tx, ty 참고
-// 텍스처 부분은 https://stdbc.tistory.com/62 참고
-// game에 wdir, wpos 넣어서 매개변수 줄이기
 static void	draw_wall(t_game *game, int wh, int x, int y0)
 {
 	int		y;
@@ -76,7 +71,7 @@ static void	draw_wall(t_game *game, int wh, int x, int y0)
 	{
 		tpos.y = (double)(y - y0) *game->wall[game->wdir].h / wh;
 		color = game->wall[game->wdir].data[game->wall[game->wdir].size_l \
-			 / (game->wall[game->wdir].bpp / 8) * (int)tpos.y + (int)tpos.x];
+			/ (game->wall[game->wdir].bpp / 8) * (int)tpos.y + (int)tpos.x];
 		my_mlx_pixel_put(&(game->img), x, y, color);
 		y++;
 	}
