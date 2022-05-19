@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 17:01:06 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 17:24:18 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 19:32:12 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ static int	hit_wall(t_intersect sect, t_pos next, t_game *game)
 	if (sect.hit_side == VERT)
 	{
 		if (sect.xstep > 0)
-			game->wdir = DIR_W;
-		else
 			game->wdir = DIR_E;
+		else
+			game->wdir = DIR_W;
 		game->wpos.x = next.x;
 		game->wpos.y = sect.f;
 	}

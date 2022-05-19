@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 19:08:51 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 19:18:12 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,18 @@ int		get_wall_intersection(t_game *game, double ray);
 
 // load
 void	load_texture(t_game *game);
+void	load_image(t_game *game, t_img *img, char *path);;
+
+//read
+void	read_cub(char *cub, t_game *game);
+int	read_img(int fd, t_game *game);
+int	read_map(int fd, t_game *game);
+int	read_rgb(int fd, t_game *game);
+int	empty_line_check(char *line_empty);
+char	*not_empty_line_load(int fd);
+
+//error
+int	error(char *msg);
 
 // math
 int		min(int a, int b);

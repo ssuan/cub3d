@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   load.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 20:22:07 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:00:23 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 19:18:23 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-static void	load_image(t_game *game, t_img *img, char *path)
+void	load_image(t_game *game, t_img *img, char *path)
 {
 	img->img = mlx_xpm_file_to_image(game->mlx, path, &img->w, &img->h);
 	if (!img->img)
