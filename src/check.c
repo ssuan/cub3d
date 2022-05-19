@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 19:10:07 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 19:13:13 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,31 @@ char	map_get_cell(t_game *game, int x, int y)
 		return (-1);
 }
 
-static void dfs(t_game *game, int x, int y)
+static void	dfs(t_game *game, int x, int y)
 {
-    char    cell;
+	char	cell;
 
-    if (game->map.chk[y][x])
-        return ;
-    game->map.chk[y][x] = TRUE;
-    cell = map_get_cell(game, x, y);
-    if (cell == -1)
-    {
-        fprintf(stderr, "not closed\n");
-        exit(1);
-    }
-    else if (cell != '0' && cell != '1')
-    {
-        fprintf(stderr, "invalid char\n");
-        exit(1);
-    }
-    else if (cell == '0')
-    {
-        dfs(game, x + 1, y);
-        dfs(game, x - 1, y);
-        dfs(game, x, y + 1);
-        dfs(game, x, y - 1);
-    }
+	if (game->map.chk[y][x])
+		return ;
+	game->map.chk[y][x] = TRUE;
+	cell = map_get_cell(game, x, y);
+	if (cell == -1)
+	{
+		fprintf(stderr, "not closed\n");
+		exit(1);
+	}
+	else if (cell != '0' && cell != '1')
+	{
+		fprintf(stderr, "invalid char\n");
+		exit(1);
+	}
+	else if (cell == '0')
+	{
+		dfs(game, x + 1, y);
+		dfs(game, x - 1, y);
+		dfs(game, x, y + 1);
+		dfs(game, x, y - 1);
+	}
 }
 
 void	map_check(t_game *game)

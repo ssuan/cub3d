@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:27:37 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 17:23:01 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 19:12:45 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	draw_wall(t_game *game, int wh, int x, int y0)
 	tpos.x = txratio * game->wall[game->wdir].w;
 	while (y <= yend)
 	{
-		tpos.y = (double)(y - y0) * game->wall[game->wdir].h / wh;
+		tpos.y = (double)(y - y0) *game->wall[game->wdir].h / wh;
 		color = game->wall[game->wdir].data[game->wall[game->wdir].size_l \
 			 / (game->wall[game->wdir].bpp / 8) * (int)tpos.y + (int)tpos.x];
 		my_mlx_pixel_put(&(game->img), x, y, color);
