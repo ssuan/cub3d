@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:31:47 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 14:21:29 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static char	g_map[MAPX][MAPY] = {
 	{'1', '0', '0', '0', '1'},
 	{'1', '0', '0', '0', '1'},
 	{'1', '0', '0', '0', '1'},
-	{'1', '0', '1', '1', '1'},
-	{'1', '1', ' ', '1', '1'}
+	{'1', '0', '0', '1', '1'},
+	{'1', '1', '1', '1', '1'}
 };
 
 // unsigned char???
@@ -32,40 +32,33 @@ char	map_get_cell(t_game *game, int x, int y)
 		return (-1);
 }
 
-// 정리 -> 구조체?
-int	dx[] = {-1, 1, 0, 0};
-int	dy[] = {0, 0, -1, 1};
-
-// game 구조체에 넣기
+// map 구조체에 넣기
 int	chk[MAPX][MAPY] = {FALSE, };
 
-static void	dfs(t_game *game, int x, int y)
+void	dfs(t_game *game, int x, int y)
 {
-	int		i;
-	int		nx;
-	int		ny;
 	char	cell;
 
+	if (chk[x][y])
+		return ;
 	chk[x][y] = TRUE;
-	i = 0;
-	while (i < 4)
+	cell = map_get_cell(game, x, y);
+	if (cell == -1)
 	{
-		nx = x + dx[i];
-		ny = y + dy[i];
-		cell = map_get_cell(game, nx, ny);
-		if (cell == -1)
-		{
-			fprintf(stderr, "not closed\n");
-			exit(1);
-		}
-		else if (cell != '0' && cell != '1')
-		{
-			fprintf(stderr, "invalid char\n");
-			exit(1);
-		}
-		else if (cell == '0' && !chk[nx][ny])
-			dfs(game, nx, ny);
-		i++;
+		fprintf(stderr, "not closed\n");
+		exit(1);
+	}
+	else if (cell != '0' && cell != '1')
+	{
+		fprintf(stderr, "invalid char\n");
+		exit(1);
+	}
+	else if (cell == '0')
+	{
+		dfs(game, x + 1, y);
+		dfs(game, x - 1, y);
+		dfs(game, x, y + 1);
+		dfs(game, x, y - 1);
 	}
 }
 
