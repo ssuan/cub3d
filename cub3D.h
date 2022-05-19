@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 16:10:20 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 19:08:51 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_map {
 	int		floor_color;
 	int		ceil_color;
 	char	map[1000][1000];
+	char	chk[1000][1000];
 	int		mapX;
 	int		mapY;
 }	t_map;

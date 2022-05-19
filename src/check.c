@@ -6,21 +6,11 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 18:17:40 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 19:10:07 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-// 빼기
-static char	g_map[MAPY][MAPX] = {
-	{'1', '1', '1', '1', '1'},
-	{'1', '0', '1', '0', '1'},
-	{'1', '0', '1', '0', '1'},
-	{'1', '0', '0', '0', '1'},
-	{'1', '0', '0', '1', '1'},
-	{'1', '1', '1', '1', '1'}
-};
 
 /*
 e: blue 180
@@ -29,26 +19,22 @@ s: grey 90
 w: wood 0
 */
 
-// unsigned char???
 char	map_get_cell(t_game *game, int x, int y)
 {
-	if ((x >= 0 && x < MAPX) \
-		&& (y >= 0 && y < MAPY))
-		return (g_map[y][x]);
+	if ((x >= 0 && x < game->map.mapX) \
+		&& (y >= 0 && y < game->map.mapY))
+		return (game->map.map[y][x]);
 	else
 		return (-1);
 }
-
-// game 구조체에 넣기
-int	chk[MAPY][MAPX] = {FALSE, };
 
 static void dfs(t_game *game, int x, int y)
 {
     char    cell;
 
-    if (chk[y][x])
+    if (game->map.chk[y][x])
         return ;
-    chk[y][x] = TRUE;
+    game->map.chk[y][x] = TRUE;
     cell = map_get_cell(game, x, y);
     if (cell == -1)
     {
@@ -75,31 +61,18 @@ void	map_check(t_game *game)
 	int	y;
 
 	x = 0;
-	while (x < MAPX)
+	while (x < game->map.mapX)
 	{
 		y = 0;
-		while (y < MAPY)
+		while (y < game->map.mapY)
 		{
-			if (g_map[y][x] == '0' && !chk[y][x])
+			if (game->map.map[y][x] == '0' && !game->map.chk[y][x])
 			{
 				dfs(game, x, y);
 			}
 			y++;
 		}
 		x++;
-	}
-
-	y = 0;
-	while (y < MAPY)
-	{
-		x = 0;
-		while (x < MAPX)
-		{
-			printf("%c", g_map[y][x]);
-			x++;
-		}
-		y++;
-		printf("\n");
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/17 18:35:45 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 19:10:46 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,32 @@ int	exit_button(t_game *game)
 	exit(0);
 }
 
+/* 제거 */
+static char	g_map[MAPY][MAPX] = {
+	{'1', '1', '1', '1', '1'},
+	{'1', '0', '1', '0', '1'},
+	{'1', '0', '1', '0', '1'},
+	{'1', '0', '0', '0', '1'},
+	{'1', '0', '0', '1', '1'},
+	{'1', '1', ' 1', '1', '1'}
+};
+/* 여기까지 */
+
 int	init_game(t_game *game, char **av)
 {
 	game->pl.px = atof(av[1]);
 	game->pl.py = atof(av[2]);
 	game->pl.th = deg2rad(atof(av[3]));
+	/* 제거 */
+	game->map.mapX = MAPX;
+	game->map.mapY = MAPY;
+	for (int y = 0; y < MAPY; y++)
+		for (int x = 0; x < MAPX; x++)
+			game->map.map[y][x] = g_map[y][x];
+	/* 여기까지 */	
+	int loop = 0;
+	while (loop < 1000)
+		ft_memset(game->map.chk[loop++], 0, sizeof(char) * 1000);
 	game->mlx = mlx_init();
 	game->fov_h = deg2rad(FOV);
 	game->fov_v = (game->fov_h * (double)SY / (double)SX);
@@ -68,9 +89,9 @@ int	main(int ac, char **av)
 
 	if (input_check(ac, av) == FAIL)
 		exit(1);
-	map_check(&game);
 	if (init_game(&game, av) == FAIL)
 		exit(1);
+	map_check(&game);
 	load_texture(&game);
 	render(&game);
 	mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
