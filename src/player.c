@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:28:30 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 18:15:35 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 18:55:50 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	player_move(t_game *game, int key, double amt)
 
 void	player_rotate(t_player *pl, double th)
 {
-	pl->th += th;
+	pl->th -= th;
 	if (pl->th < 0)
 		pl->th += _2PI;
 	else if (pl->th > _2PI)
