@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 14:21:29 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 14:23:44 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	map_get_cell(t_game *game, int x, int y)
 // map 구조체에 넣기
 int	chk[MAPX][MAPY] = {FALSE, };
 
-void	dfs(t_game *game, int x, int y)
+static void	dfs(t_game *game, int x, int y)
 {
 	char	cell;
 
