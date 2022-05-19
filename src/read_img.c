@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 19:18:56 by sunbchoi@st       #+#    #+#             */
-/*   Updated: 2022/05/19 19:31:51 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/19 20:02:07 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	save_xpm(char *line, t_game *game, int *check, int dir)
 	if (empty_check == 1 && *empty == '.')
 	{
 		xpm = ft_strdup(empty);
-		printf("XPM[%s]\n", xpm);
 		load_image(game, &game->wall[dir], xpm);
 		check[dir] = 1;
 	}

@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 20:39:36 by sunbchoi          #+#    #+#             */
-/*   Updated: 2022/05/19 19:45:00 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/19 20:02:21 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,12 @@ int	read_map(int fd, t_game *game)
 	game->map.mapX = 0;
 	line = not_empty_line_load(fd);
 	save_line_map(line, game, loop_y++);
-	printf("[%s]\n", game->map.map[0]);
 	while (ft_gnl(fd, &line))
 	{
 		save_line_map(line, game, loop_y);
-		printf("[%s]\n", game->map.map[loop_y]);
 		loop_y++;
 	}
 	save_line_map(line, game, loop_y);
-	printf("[%s]\n", game->map.map[loop_y]);
 	loop_y++;
 	game->map.mapY = loop_y;
 	return (1);

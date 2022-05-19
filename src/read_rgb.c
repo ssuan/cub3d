@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 19:18:56 by sunbchoi          #+#    #+#             */
-/*   Updated: 2022/05/18 21:59:27 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/19 20:02:36 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int	check_rgb(char *line, t_game *game)
 	if (empty_check != 1)
 		error("Invalid *.cub file - NOT ENOUGH SPACE COLOR");
 	save_rgb(empty, cur, game);
-	printf("[%c] color[%d]\n", line[0], *cur);
 	free(line);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 19:17:41 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/19 20:01:29 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,9 @@ static void	dfs(t_game *game, int x, int y)
 	game->map.chk[y][x] = TRUE;
 	cell = map_get_cell(game, x, y);
 	if (cell == -1)
-	{
-		fprintf(stderr, "not closed\n");
-		exit(1);
-	}
+		error("Invalid *.cub file - MAP NOT CLOSE");
 	else if (cell != '0' && cell != '1')
-	{
-		fprintf(stderr, "invalid char\n");
-		exit(1);
-	}
+		error("Invalid *.cub file - MAP HAS INVALID CHAR");
 	else if (cell == '0')
 	{
 		dfs(game, x + 1, y);
@@ -82,17 +76,17 @@ int	input_check(int ac, char **av)
 
 	if (ac < 2 || ft_strlen(av[1]) == 0)
 	{
-		perror("Please enter the name of the map file you want to use.\n\
+		error("Please enter the name of the map file you want to use.\n\
 			Ex: ./maps/map.cub");
 	}
 	else if (ac > 2)
 	{
-		perror("Too many argument entered. Please retry it again.\n\
+		error("Too many argument entered. Please retry it again.\n\
 			Ex: ./maps/map.cub");
 	}
 	map_ext = ft_strrchr(av[1], '.');
 	if ((ft_strstr(map_ext, ".cub") == NULL) \
 		|| (ft_strlen(map_ext) != ft_strlen(".cub")))
-		perror("Invalid map extension. Please Enter *.cub");
+		error("Invalid map extension. Please Enter *.cub");
 	return (SUCCESS);
 }

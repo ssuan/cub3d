@@ -6,7 +6,7 @@
 /*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 13:51:41 by sunbchoi          #+#    #+#             */
-/*   Updated: 2022/05/18 23:05:32 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/19 20:01:56 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,5 @@ void	read_cub(char *cub, t_game *game)
 		error("Map not found");
 	read_img(fd, game);
 	read_rgb(fd, game);
-	printf("C%d F%d \n", game->map.ceil_color, game->map.floor_color);
 	read_map(fd, game);
 }
