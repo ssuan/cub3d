@@ -6,7 +6,7 @@
 /*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:28:30 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 18:55:50 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/19 21:27:14 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ static int	get_move_offset(double th, int key, double amt, t_pos *dpos)
 		sgn = -1;
 	if (key == KEY_W || key == KEY_S)
 	{
-		dpos->x = sgn * amt * cos(th);
-		dpos->y = sgn * amt * sin(th);
+		dpos->x = sgn * amt * cos(th) * 2;
+		dpos->y = sgn * amt * sin(th) * 2;
 	}
 	else if (key == KEY_A || key == KEY_D)
 	{
-		dpos->x = amt * cos(th + sgn * M_PI_2);
-		dpos->y = amt * sin(th + sgn * M_PI_2);
+		dpos->x = amt * cos(th + sgn * M_PI_2) * 2;
+		dpos->y = amt * sin(th + sgn * M_PI_2) * 2;
 	}
 	else
 		return (-1);

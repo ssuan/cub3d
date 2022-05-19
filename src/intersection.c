@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
+/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 17:01:06 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 19:32:12 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/19 21:32:52 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,12 @@ static void	get_next_map(t_intersect *sect, t_player pl, t_pos next)
 		sect->mapx = (int)(next.x);
 		if (sect->xstep != 1)
 			sect->mapx -= 1;
-		sect->mapy = (int) sect->f;
+		sect->mapy = (int)sect->f;
 		sect->hit_side = VERT;
 	}
 	else
 	{
-		sect->mapx = (int) sect->g;
+		sect->mapx = (int)sect->g;
 		sect->mapy = (int)(next.y);
 		if (sect->ystep != 1)
 			sect->mapy -= 1;
@@ -75,10 +75,10 @@ static int	hit_wall(t_intersect sect, t_pos next, t_game *game)
 {
 	if (sect.hit_side == VERT)
 	{
-		if (sect.xstep > 0)
-			game->wdir = DIR_E;
-		else
+		if (sect.xstep < 0)
 			game->wdir = DIR_W;
+		else
+			game->wdir = DIR_E;
 		game->wpos.x = next.x;
 		game->wpos.y = sect.f;
 	}
