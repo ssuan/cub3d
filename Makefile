@@ -6,12 +6,12 @@
 #    By: sunbchoi <sunbchoi>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 14:46:27 by sunbchoi          #+#    #+#              #
-#    Updated: 2022/05/19 19:55:02 by sunbchoi         ###   ########.fr        #
+#    Updated: 2022/05/20 13:23:40 by suan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAG = #-Wall -Wextra -Werror
+CFLAG = -Wall -Wextra -Werror
 
 SRCS = src/main.c\
 		src/init.c\
@@ -48,7 +48,7 @@ RM = rm -f
 all: $(NAME)
 
 %.o:			%.c
-			$(CC) $(CFLAGS) -c $< -o $@ $(INC)
+			$(CC) $(CFLAG) -c $< -o $@ $(INC)
 
 $(NAME):	$(MINI_NAME) $(LIBFT_NAME) $(OBJS)
 			$(CC) $(CFLAG) $(INC) -o $@ $(OBJS) $(LIBS)
