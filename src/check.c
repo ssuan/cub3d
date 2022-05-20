@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/20 14:04:43 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/20 15:05:24 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ int	input_check(int ac, char **av)
 			Ex: ./maps/map.cub");
 	}
 	map_ext = ft_strrchr(av[1], '.');
-	if ((ft_strstr(map_ext, ".cub") == NULL) \
+	if ((map_ext == NULL) \
+		|| (ft_strstr(map_ext, ".cub") == NULL) \
 		|| (ft_strlen(map_ext) != ft_strlen(".cub")))
 		error("Invalid map extension. Please Enter *.cub");
 	return (SUCCESS);
