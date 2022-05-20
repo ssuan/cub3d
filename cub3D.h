@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
+/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 20:05:09 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/20 14:03:41 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ typedef struct s_map {
 	int		ceil_color;
 	char	map[1000][1000];
 	char	chk[1000][1000];
-	int		mapX;
-	int		mapY;
+	int		mapx;
+	int		mapy;
 }	t_map;
 
 typedef struct s_game {

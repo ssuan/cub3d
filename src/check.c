@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
+/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:38:49 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 20:01:29 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/20 14:04:43 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ w: wood 0
 
 char	map_get_cell(t_game *game, int x, int y)
 {
-	if ((x >= 0 && x < game->map.mapX) \
-		&& (y >= 0 && y < game->map.mapY))
+	if ((x >= 0 && x < game->map.mapx) \
+		&& (y >= 0 && y < game->map.mapy))
 		return (game->map.map[y][x]);
 	else
 		return (-1);
@@ -55,10 +55,10 @@ void	map_check(t_game *game)
 	int	y;
 
 	x = 0;
-	while (x < game->map.mapX)
+	while (x < game->map.mapx)
 	{
 		y = 0;
-		while (y < game->map.mapY)
+		while (y < game->map.mapy)
 		{
 			if (game->map.map[y][x] == '0' && !game->map.chk[y][x])
 			{

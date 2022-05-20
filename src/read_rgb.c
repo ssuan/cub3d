@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_rgb.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
+/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 19:18:56 by sunbchoi          #+#    #+#             */
-/*   Updated: 2022/05/19 20:02:36 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/20 14:08:36 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	set_value_rgb(int *cur, int *color, int *cnt)
 		error("Invalid *.cub file - FAIL SAVE!! RGB");
 }
 
-void	save_rgb(char *line, int *cur, t_game *game)
+void	save_rgb(char *line, int *cur)
 {
 	int	cnt;
 	int	value;
@@ -68,7 +68,7 @@ int	check_rgb(char *line, t_game *game)
 	}
 	if (empty_check != 1)
 		error("Invalid *.cub file - NOT ENOUGH SPACE COLOR");
-	save_rgb(empty, cur, game);
+	save_rgb(empty, cur);
 	free(line);
 	return (1);
 }
@@ -76,7 +76,6 @@ int	check_rgb(char *line, t_game *game)
 int	read_rgb(int fd, t_game *game)
 {
 	char	*line;
-	int		empty_check;
 
 	game->map.ceil_color = -1;
 	game->map.floor_color = -1;

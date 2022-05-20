@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_img.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
+/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 19:18:56 by sunbchoi@st       #+#    #+#             */
-/*   Updated: 2022/05/19 20:02:07 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/20 14:07:01 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ int	save_xpm(char *line, t_game *game, int *check, int dir)
 	char	*empty;
 	char	*xpm;
 	int		empty_check;
-	int		w;
-	int		h;
-
+	
 	empty = &line[2];
 	while (*empty == ' ')
 	{
@@ -31,8 +29,8 @@ int	save_xpm(char *line, t_game *game, int *check, int dir)
 		xpm = ft_strdup(empty);
 		load_image(game, &game->wall[dir], xpm);
 		check[dir] = 1;
+		free(xpm);
 	}
-	free(xpm);
 	return (1);
 }
 
@@ -59,7 +57,7 @@ int	check_img(char *line, t_game *game, int *check)
 	return (1);
 }
 
-int	read_img(int fd, t_game *game)
+int	read_img(int fd, t_game *game)   
 {
 	int		ck[4];
 	int		loop;

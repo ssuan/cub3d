@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_cub.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
+/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 13:51:41 by sunbchoi          #+#    #+#             */
-/*   Updated: 2022/05/19 20:01:56 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/20 14:05:29 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ char	*not_empty_line_load(int fd)
 void	read_cub(char *cub, t_game *game)
 {
 	int		fd;
-	int		y_len;
 
 	fd = open(cub, O_RDONLY);
 	if (fd == -1)

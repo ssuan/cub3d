@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
+/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:59:24 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 19:55:58 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/20 14:05:14 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	key_press(int keycode, t_game *game)
 	return (0);
 }
 
-int	exit_button(t_game *game)
+int	exit_button(void)
 {
 	exit(0);
 }
@@ -51,7 +51,7 @@ int	main(int ac, char **av)
 	render(&game);
 	mlx_put_image_to_window(game.mlx, game.mlx_win, game.img.img, 0, 0);
 	mlx_hook(game.mlx_win, X_EVENT_KEY_PRESS, 0, key_press, &game);
-	mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, &game);
+	mlx_hook(game.mlx_win, X_EVENT_KEY_EXIT, 0, exit_button, 0);
 	mlx_loop(game.mlx);
 	return (0);
 }

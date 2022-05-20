@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
+/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 20:39:36 by sunbchoi          #+#    #+#             */
-/*   Updated: 2022/05/19 20:02:21 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/20 14:10:11 by suan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	check_player(char *line, t_game *game, int y)
 {
 	char	key[5];
 	int		loop;
-	int		pos;
 	char	*r_val;
 	char	*l_val;
 
@@ -70,9 +69,9 @@ void	save_line_map(char *line, t_game *game, int y)
 {
 	if (y > 1000)
 		error("Invalid *.cub file - map height <= 1000");
-	if (game->map.mapX < ft_strlen(line))
-		game->map.mapX = ft_strlen(line);
-	if (game->map.mapX > 1000)
+	if (game->map.mapx < (int)ft_strlen(line))
+		game->map.mapx = (int)ft_strlen(line);
+	if (game->map.mapx > 1000)
 		error("Invalid *.cub file - map width <= 1000");
 	check_player(line, game, y);
 	ft_memcpy(game->map.map[y], line, ft_strlen(line));
@@ -83,11 +82,10 @@ void	save_line_map(char *line, t_game *game, int y)
 int	read_map(int fd, t_game *game)
 {
 	int		loop_y;
-	char	key;
 	char	*line;
 
 	loop_y = 0;
-	game->map.mapX = 0;
+	game->map.mapx = 0;
 	line = not_empty_line_load(fd);
 	save_line_map(line, game, loop_y++);
 	while (ft_gnl(fd, &line))
@@ -97,6 +95,6 @@ int	read_map(int fd, t_game *game)
 	}
 	save_line_map(line, game, loop_y);
 	loop_y++;
-	game->map.mapY = loop_y;
+	game->map.mapy = loop_y;
 	return (1);
 }
