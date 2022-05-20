@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 14:28:30 by suan              #+#    #+#             */
-/*   Updated: 2022/05/19 18:55:50 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/20 14:58:46 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,12 @@ int	player_move(t_game *game, int key, double amt)
 	dpos.x = 0;
 	dpos.y = 0;
 	if (get_move_offset(game->pl.th, key, amt, &dpos) < 0)
-	{
-		fprintf(stderr, "player_move: invalid key %d\n", key);
 		return (-1);
-	}
 	nx = game->pl.px + dpos.x;
 	ny = game->pl.py + dpos.y;
 	if (map_get_cell(game, (int)nx, (int)ny) != '0')
 	{
-		printf("** bump !\n");
+		ft_putstr_fd("** bump !\n", 1);
 		return (-1);
 	}
 	game->pl.px = nx;

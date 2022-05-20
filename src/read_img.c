@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_img.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 19:18:56 by sunbchoi@st       #+#    #+#             */
-/*   Updated: 2022/05/20 14:07:01 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/20 14:50:19 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	save_xpm(char *line, t_game *game, int *check, int dir)
 	char	*empty;
 	char	*xpm;
 	int		empty_check;
-	
+
 	empty = &line[2];
 	while (*empty == ' ')
 	{
@@ -57,17 +57,18 @@ int	check_img(char *line, t_game *game, int *check)
 	return (1);
 }
 
-int	read_img(int fd, t_game *game)   
+int	read_img(int fd, t_game *game, char	*line)
 {
 	int		ck[4];
 	int		loop;
-	char	*line;
 
 	ft_memset(ck, 0, sizeof(int) * 4);
 	loop = 0;
 	while (loop < 4)
 	{
-		if ((ft_gnl(fd, &line)) == 0)
+		if (loop != 0)
+			line = not_empty_line_load(fd, 0);
+		if (line == NULL)
 			error("Invalid *.cub file - FAIL READ");
 		if ((check_img(line, game, ck) == 0))
 			error("Invalid *.cub file - FAIL SAVE IMAGE");

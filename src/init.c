@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunbchoi <sunbchoi>                        +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 19:47:33 by sunbchoi          #+#    #+#             */
-/*   Updated: 2022/05/19 19:56:04 by sunbchoi         ###   ########.fr       */
+/*   Updated: 2022/05/20 14:52:50 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ void	init_value(t_game *game)
 	game->fov_h = deg2rad(FOV);
 	game->fov_v = (game->fov_h * (double)SY / (double)SX);
 	game->per_angle = game->fov_h / (SX - 1.);
+	game->wall[0].img = NULL;
+	game->wall[1].img = NULL;
+	game->wall[2].img = NULL;
+	game->wall[3].img = NULL;
 	loop = 0;
 	while (loop < 1000)
 	{

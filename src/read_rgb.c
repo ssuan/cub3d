@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_rgb.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 19:18:56 by sunbchoi          #+#    #+#             */
-/*   Updated: 2022/05/20 14:08:36 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/20 14:53:29 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	set_value_rgb(int *cur, int *color, int *cnt)
 	{
 		if (*cur < 0)
 			*cur = 0;
-		*cur *= 255;
+		*cur *= 256;
 		*cur += *color;
 		*color = 0;
 		(*cnt)++;
@@ -73,16 +73,14 @@ int	check_rgb(char *line, t_game *game)
 	return (1);
 }
 
-int	read_rgb(int fd, t_game *game)
+int	read_rgb(int fd, t_game *game, char *line)
 {
-	char	*line;
-
 	game->map.ceil_color = -1;
 	game->map.floor_color = -1;
-	line = not_empty_line_load(fd);
 	if (check_rgb(line, game) == 0)
 		error("Invalid *.cub file - FAIL SAVE RGB");
-	if (!ft_gnl(fd, &line))
+	line = not_empty_line_load(fd, 0);
+	if (line == NULL)
 		error("Invalid *.cub file - FAIL READ");
 	if (check_rgb(line, game) == 0)
 		error("Invalid *.cub file - FAIL SAVE RGB");

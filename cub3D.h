@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:44:19 by suan              #+#    #+#             */
-/*   Updated: 2022/05/20 14:03:41 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/20 14:43:56 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@
 # define TRUE 1
 # define FALSE 0
 
-# define  MAPX   5
-# define  MAPY   6
 # define  SX         300     /* screen width */
 # define  SY         250     /* screen height */
 # define  FOV        60      /* field of view (in degree) */
@@ -139,11 +137,11 @@ void	load_image(t_game *game, t_img *img, char *path);
 
 //read
 void	read_cub(char *cub, t_game *game);
-int		read_img(int fd, t_game *game);
+int		read_img(int fd, t_game *game, char *line);
 int		read_map(int fd, t_game *game);
-int		read_rgb(int fd, t_game *game);
+int		read_rgb(int fd, t_game *game, char *line);
 int		empty_line_check(char *line_empty);
-char	*not_empty_line_load(int fd);
+char	*not_empty_line_load(int fd, int check);
 
 //error
 int		error(char *msg);

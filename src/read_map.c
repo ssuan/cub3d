@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suan <suan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sunbchoi <sunbchoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 20:39:36 by sunbchoi          #+#    #+#             */
-/*   Updated: 2022/05/20 14:10:11 by suan             ###   ########.fr       */
+/*   Updated: 2022/05/20 15:00:01 by sunbchoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	set_player(char *line, int x, int y, t_game *game)
 {
-	game->pl.px = (float)x + 0.5;
-	game->pl.py = (float)y + 0.5;
+	game->pl.px = (float)x + 0.501;
+	game->pl.py = (float)y + 0.501;
 	if (line[x] == 'N')
 	{
 		game->wdir = 0;
@@ -86,7 +86,7 @@ int	read_map(int fd, t_game *game)
 
 	loop_y = 0;
 	game->map.mapx = 0;
-	line = not_empty_line_load(fd);
+	line = not_empty_line_load(fd, 1);
 	save_line_map(line, game, loop_y++);
 	while (ft_gnl(fd, &line))
 	{
